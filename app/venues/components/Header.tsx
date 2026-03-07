@@ -7,9 +7,9 @@ import Lead from "@/app/events/modals/Lead";
 
 export default function Header() {
   const images = [
-    "/events/header/Header1x1.png",
-    "/events/header/Header1x2.png",
-    "/events/header/Header1x3.png",
+    "/venues/header/Header1x1.png",
+    "/venues/header/Header1x2.png",
+    "/venues/header/Header1x3.png",
   ];
 
   const [index, setIndex] = useState(0);
@@ -69,7 +69,7 @@ export default function Header() {
           <Image
             key={src}
             src={src}
-            alt="Events and Catering"
+            alt="Venues"
             fill
             priority={i === 0}
             className={`object-cover transition-opacity duration-1000 ${
@@ -106,16 +106,23 @@ export default function Header() {
             <ChevronRight size={24} className="md:size-[32px]" />
           </button>
         </div>
-
       </div>
 
-      {/* Bottom Section - Mobile Optimized */}
+      {/* Bottom Section - Mobile Optimized with Desktop following same pattern */}
       <div className="relative w-full px-4 md:px-0 py-5 md:py-8 flex flex-col items-center justify-center text-center">
         
-        {/* Title */}
+        {/* Title - Progressive scaling exactly like Events page */}
         <h1 className="font-brisa text-4xl sm:text-5xl md:text-[75px] font-medium tracking-wide text-black mb-2 md:mb-1 leading-tight">
-          Events & Catering
+          Venues
         </h1>
+
+        {/* Description - Properly scaled for all devices */}
+        <p className="font-jost text-base sm:text-lg md:text-xl lg:text-[28px] max-w-[1100px] leading-tight text-black px-6 md:px-4 mb-4 md:mb-6">
+          Whether you're hosting an intimate gathering or a large celebration, 
+          we partner with a variety of venues to suit your event needs. 
+          From stylish indoor spaces to open, flexible locations, 
+          we help you find the perfect setting to bring your event to life.
+        </p>
 
         {/* CTA Button - Mobile Optimized */}
         <button
@@ -123,7 +130,7 @@ export default function Header() {
           className="font-jost border-2 md:border-4 border-[#F28C28] text-black px-6 md:px-4 py-2 md:py-1 text-xl md:text-[28px] tracking-wider 
           hover:bg-[#F28C28] hover:text-white transition-all duration-300 font-medium"
         >
-          PLAN YOUR EVENT
+          CONTACT US
         </button>
       </div>
 
