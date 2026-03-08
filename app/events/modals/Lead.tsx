@@ -13,6 +13,12 @@ export default function Lead({ open, onClose }: LeadProps) {
   if (!open) return null;
 
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,11 +29,67 @@ export default function Lead({ open, onClose }: LeadProps) {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Reset step after submission if needed
-    setStep(1);
+    
+    // Validate required fields
+    if (!formData.name || !formData.email) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Name and email are required fields'
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
+
+    try {
+      // Send data to our API endpoint
+      const response = await fetch('/api/send-mail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit inquiry');
+      }
+
+      // Success!
+      setSubmitStatus({
+        type: 'success',
+        message: 'Inquiry sent successfully! We\'ll respond within 24 hours.'
+      });
+
+      // Reset form after 3 seconds and close modal
+      setTimeout(() => {
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          eventType: "",
+          venue: "",
+          guests: "",
+          message: ""
+        });
+        setStep(1);
+        setSubmitStatus({ type: null, message: '' });
+        onClose();
+      }, 3000);
+
+    } catch (error: any) {
+      setSubmitStatus({
+        type: 'error',
+        message: error.message || 'Failed to send inquiry. Please try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -35,6 +97,10 @@ export default function Lead({ open, onClose }: LeadProps) {
       ...formData,
       [e.target.name]: e.target.value
     });
+    // Clear status when user starts typing again
+    if (submitStatus.type) {
+      setSubmitStatus({ type: null, message: '' });
+    }
   };
 
   const handleNext = () => {
@@ -73,14 +139,15 @@ export default function Lead({ open, onClose }: LeadProps) {
         <button
           className="absolute top-3 right-3 z-30 bg-black/50 hover:bg-black/70 text-white rounded-full p-1.5 transition-colors"
           onClick={onClose}
+          disabled={isSubmitting}
         >
           <X size={18} />
         </button>
 
-        {/* LEFT SIDE - Orange Panel - No scrolling needed */}
+        {/* LEFT SIDE - Orange Panel */}
         <div className="bg-[#F26522] text-white p-5 flex flex-col md:p-8">
           
-          {/* Logo - Smaller on mobile */}
+          {/* Logo */}
           <div className="flex justify-center md:justify-start mb-1">
             <Image
               src="/LogoWhite.png"
@@ -98,12 +165,12 @@ export default function Lead({ open, onClose }: LeadProps) {
             />
           </div>
 
-          {/* Title - Compact */}
+          {/* Title */}
           <h2 className="text-2xl md:text-4xl font-medium text-white text-center md:text-left">
             Plan Your Event
           </h2>
 
-          {/* Description - Condensed */}
+          {/* Description */}
           <p className="text-sm md:text-base text-white/90 leading-relaxed text-center md:text-left mb-1">
             Tell us about your event and our specialists will help craft the perfect menu. We will respond to you in 24 hours.
           </p>
@@ -145,7 +212,18 @@ export default function Lead({ open, onClose }: LeadProps) {
         <div className="p-5 md:p-8 bg-white overflow-y-auto">
           <form className="space-y-4" onSubmit={handleSubmit}>
             
-            {/* DESKTOP VIEW - Original layout (unchanged) */}
+            {/* Status Message */}
+            {submitStatus.type && (
+              <div className={`p-3 rounded-lg text-sm ${
+                submitStatus.type === 'success' 
+                  ? 'bg-green-50 text-green-800 border border-green-200' 
+                  : 'bg-red-50 text-red-800 border border-red-200'
+              }`}>
+                {submitStatus.message}
+              </div>
+            )}
+            
+            {/* DESKTOP VIEW */}
             <div className="hidden md:block space-y-4">
               {/* Name */}
               <div>
@@ -159,7 +237,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                   onChange={handleChange}
                   placeholder="Your full name"
                   required
-                  className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                  disabled={isSubmitting}
+                  className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -176,7 +255,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                     onChange={handleChange}
                     placeholder="you@email.com"
                     required
-                    className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                    disabled={isSubmitting}
+                    className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -189,7 +269,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="0917 000 0000"
-                    className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                    disabled={isSubmitting}
+                    className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -204,7 +285,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                     value={formData.eventType}
                     onChange={handleChange}
                     placeholder="Wedding, Birthday..."
-                    className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                    disabled={isSubmitting}
+                    className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -215,7 +297,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                     value={formData.venue}
                     onChange={handleChange}
                     placeholder="Venue name"
-                    className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                    disabled={isSubmitting}
+                    className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -226,7 +309,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                     value={formData.guests}
                     onChange={handleChange}
                     placeholder="100"
-                    className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                    disabled={isSubmitting}
+                    className="w-full mt-1 h-11 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -240,7 +324,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                   onChange={handleChange}
                   rows={2}
                   placeholder="Tell us more about your event..."
-                  className="w-full mt-1 px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition resize-none placeholder-gray-400"
+                  disabled={isSubmitting}
+                  className="w-full mt-1 px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition resize-none placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -251,16 +336,27 @@ export default function Lead({ open, onClose }: LeadProps) {
                 </p>
                 <button
                   type="submit"
-                  className="w-full md:w-auto bg-[#F26522] text-white px-6 md:px-8 py-2.5 md:py-3 rounded-lg font-medium hover:bg-[#e35a1b] transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2 order-1 md:order-2"
+                  disabled={isSubmitting}
+                  className="w-full md:w-auto bg-[#F26522] text-white px-6 md:px-8 py-2.5 md:py-3 rounded-lg font-medium hover:bg-[#e35a1b] transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2 order-1 md:order-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span>Submit Inquiry</span>
-                  <Mail size={16} />
+                  {isSubmitting ? (
+                    <>
+                      <span>Sending...</span>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    </>
+                  ) : (
+                    <>
+                      <span>Submit Inquiry</span>
+                      <Mail size={16} />
+                    </>
+                  )}
                 </button>
               </div>
             </div>
 
             {/* MOBILE VIEW - Progressive form */}
             <div className="md:hidden">
+              {/* Form steps content remains the same but add disabled prop */}
               {/* Name & Email (Step 1) */}
               {step === 1 && (
                 <div className="space-y-3">
@@ -275,7 +371,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                       onChange={handleChange}
                       placeholder="Your full name"
                       required
-                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                      disabled={isSubmitting}
+                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
                   <div>
@@ -289,7 +386,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                       onChange={handleChange}
                       placeholder="you@email.com"
                       required
-                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                      disabled={isSubmitting}
+                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -308,7 +406,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="0917 000 0000"
-                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                      disabled={isSubmitting}
+                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -325,7 +424,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                       value={formData.eventType}
                       onChange={handleChange}
                       placeholder="Wedding, Birthday..."
-                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                      disabled={isSubmitting}
+                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
                   <div>
@@ -336,7 +436,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                       value={formData.venue}
                       onChange={handleChange}
                       placeholder="Venue name"
-                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                      disabled={isSubmitting}
+                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
                   <div>
@@ -347,7 +448,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                       value={formData.guests}
                       onChange={handleChange}
                       placeholder="Number of guests"
-                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400"
+                      disabled={isSubmitting}
+                      className="w-full mt-1 h-9 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -364,7 +466,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                       onChange={handleChange}
                       rows={3}
                       placeholder="Tell us more about your event..."
-                      className="w-full mt-1 px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition resize-none placeholder-gray-400"
+                      disabled={isSubmitting}
+                      className="w-full mt-1 px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F26522] focus:border-transparent outline-none transition resize-none placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -376,7 +479,8 @@ export default function Lead({ open, onClose }: LeadProps) {
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="flex-1 bg-gray-100 text-gray-700 px-4 py-2.5 rounded-lg font-medium hover:bg-gray-200 transition flex items-center justify-center gap-1"
+                    disabled={isSubmitting}
+                    className="flex-1 bg-gray-100 text-gray-700 px-4 py-2.5 rounded-lg font-medium hover:bg-gray-200 transition flex items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <ArrowLeft size={16} />
                     Back
@@ -387,9 +491,9 @@ export default function Lead({ open, onClose }: LeadProps) {
                   <button
                     type="button"
                     onClick={handleNext}
-                    disabled={!isStepValid()}
+                    disabled={!isStepValid() || isSubmitting}
                     className={`flex-1 bg-[#F26522] text-white px-4 py-2.5 rounded-lg font-medium transition flex items-center justify-center gap-1 ${
-                      !isStepValid() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#e35a1b]'
+                      !isStepValid() || isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#e35a1b]'
                     }`}
                   >
                     Next
@@ -398,10 +502,20 @@ export default function Lead({ open, onClose }: LeadProps) {
                 ) : (
                   <button
                     type="submit"
-                    className="flex-1 bg-[#F26522] text-white px-4 py-2.5 rounded-lg font-medium hover:bg-[#e35a1b] transition shadow-lg flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                    className="flex-1 bg-[#F26522] text-white px-4 py-2.5 rounded-lg font-medium hover:bg-[#e35a1b] transition shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <span>Submit</span>
-                    <Mail size={16} />
+                    {isSubmitting ? (
+                      <>
+                        <span>Sending...</span>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      </>
+                    ) : (
+                      <>
+                        <span>Submit</span>
+                        <Mail size={16} />
+                      </>
+                    )}
                   </button>
                 )}
               </div>

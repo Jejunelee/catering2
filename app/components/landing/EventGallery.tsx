@@ -3,12 +3,20 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation"; // Add this import
 
 export default function EventGallery() {
+  const router = useRouter(); // Add this hook
   const images = [
-    "/EventGallery.png",
-    "/EventGallery2.png",
-    "/EventGallery3.png",
+    "/landing/eventgallery/EventGallery1.png",
+    "/landing/eventgallery/EventGallery2.jpg",
+    "/landing/eventgallery/EventGallery3.jpg",
+    "/landing/eventgallery/EventGallery4.jpg",
+    "/landing/eventgallery/EventGallery5.jpg",
+    "/landing/eventgallery/EventGallery6.jpg",
+    "/landing/eventgallery/EventGallery7.jpg",
+    "/landing/eventgallery/EventGallery8.jpg",
+    "/landing/eventgallery/EventGallery9.jpg",
   ];
 
   const [index, setIndex] = useState(0);
@@ -21,6 +29,11 @@ export default function EventGallery() {
 
   const next = () => {
     setIndex((i) => (i === images.length - 1 ? 0 : i + 1));
+  };
+
+  // Add this handler function
+  const handleViewGallery = () => {
+    router.push('/events');
   };
 
   // Swipe handling for mobile
@@ -70,7 +83,10 @@ export default function EventGallery() {
             Remembering
           </h2>
 
-          <button className="mt-7 border-2 border-white px-5 py-2.5 text-[21px] tracking-[2px] hover:bg-white hover:text-[#F5821F] transition-all duration-300 w-fit font-medium">
+          <button 
+            onClick={handleViewGallery} // Add onClick handler
+            className="mt-7 border-2 border-white px-5 py-2.5 text-[21px] tracking-[2px] hover:bg-white hover:text-[#F5821F] transition-all duration-300 w-fit font-medium"
+          >
             VIEW EVENT GALLERY
           </button>
         </div>
@@ -184,7 +200,10 @@ export default function EventGallery() {
 
         {/* Mobile Button */}
         <div className="bg-[#E6D7C7] px-6 py-6">
-          <button className="w-full bg-[#FF8400] text-white py-4 px-6 text-lg tracking-wide hover:bg-[#F5821F] transition-all duration-300 active:scale-98 font-medium rounded-lg shadow-md">
+          <button 
+            onClick={handleViewGallery} // Add onClick handler
+            className="w-full bg-[#FF8400] text-white py-4 px-6 text-lg tracking-wide hover:bg-[#F5821F] transition-all duration-300 active:scale-98 font-medium rounded-lg shadow-md"
+          >
             VIEW EVENT GALLERY
           </button>
         </div>

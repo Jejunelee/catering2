@@ -7,9 +7,7 @@ import Lead from "@/app/events/modals/Lead";
 
 export default function Header() {
   const images = [
-    "/events/header/Header1x1.png",
-    "/events/header/Header1x2.png",
-    "/events/header/Header1x3.png",
+    "/events/header/Header1x1.png"
   ];
 
   const [index, setIndex] = useState(0);

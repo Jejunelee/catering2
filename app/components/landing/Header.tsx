@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ChevronRight } from "lucide-react";
+import Lead from "@/app/events/modals/Lead"; // Add this import
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [leadOpen, setLeadOpen] = useState(false); // Add state for lead popup
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,13 +50,13 @@ export default function Header() {
     { href: "/foodtrays", label: "Food Trays" },
     { href: "/gifts", label: "Gifts" },
     { href: "/venues", label: "Venues" },
-    { href: "/blog", label: "Blogs & Articles" },
+    { href: "/blog", label: "Blogs & Articles", disabled: true }, // Add disabled flag
   ];
 
   return (
     <>
       <header
-        className={`sticky top-0 z-50 w-full border-b border-black/5
+        className={`sticky top-0 z-50 w-full
         transition-all duration-300
         ${scrolled ? "py-1 bg-[#FFEFE0]/95 backdrop-blur-md shadow-md" : "py-2 bg-[#FFEFE0]"}`}
       >
@@ -63,10 +65,10 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center group" onClick={() => open && setOpen(false)}>
             <Image
-              src="/LogoCater.png"
+              src="/MainLogo.png"
               alt="Cravings Catering Logo"
-              width={240}
-              height={83}
+              width={200}
+              height={80}
               priority
               className={`object-contain transition-all duration-300
               ${scrolled ? "scale-[0.85]" : "scale-100"}`}
@@ -75,29 +77,37 @@ export default function Header() {
 
           {/* Right Side */}
           <div
-            className={`flex items-center gap-4 md:gap-10 transition-all duration-300
+            className={`flex items-center gap-4 md:gap-6 transition-all duration-300
             ${scrolled ? "scale-[0.92]" : "scale-100"}`}
           >
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-10 text-[16px] lg:text-[19px] font-jost text-black">
               {navItems.map((item) => (
-                <Link 
-                  key={item.href} 
-                  href={item.href} 
-                  className="hover:text-[#F15B19] transition-colors duration-200 relative group"
-                >
-                  {item.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F15B19] transition-all duration-300 group-hover:w-full"></span>
-                </Link>
+                item.disabled ? (
+                  <span 
+                    key={item.href} 
+                    className="text-neutral-300 cursor-not-allowed relative group"
+                  >
+                    {item.label}
+                  </span>
+                ) : (
+                  <Link 
+                    key={item.href} 
+                    href={item.href} 
+                    className="hover:text-[#F15B19] transition-colors duration-200 relative group"
+                  >
+                    {item.label}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F15B19] transition-all duration-300 group-hover:w-full"></span>
+                  </Link>
+                )
               ))}
             </nav>
 
-            {/* Contact Button (hidden on small phones) */}
-            <Link
-              href="/contact"
-              className="hidden sm:inline-block font-jost bg-[#F15B19] text-white px-6 lg:px-8 py-2.5 rounded-[21px] text-[18px] lg:text-[22px]
-              shadow-[0_6px_16px_rgba(241,91,25,0.25)]
+            {/* Get a Quote Button (replacing Contact Us) */}
+            <button
+              onClick={() => setLeadOpen(true)}
+              className="hidden sm:inline-block font-jost bg-[#F15B19] text-white px-6 lg:px-6 py-1 rounded-[16px] text-[16px] lg:text-[20px]
               hover:bg-orange-600
               hover:shadow-[0_10px_24px_rgba(241,91,25,0.35)]
               hover:-translate-y-0.5
@@ -105,11 +115,11 @@ export default function Header() {
               transition-all duration-200"
             >
               Contact Us
-            </Link>
+            </button>
 
             {/* Hamburger - improved touch target */}
             <button
-              className="md:hidden text-black p-2 hover:bg-black/5 rounded-full transition-colors"
+              className="md:hidden text-[#F15B19] p-2 hover:bg-black/5 rounded-full transition-colors"
               onClick={() => setOpen(!open)}
               aria-label={open ? "Close menu" : "Open menu"}
             >
@@ -134,31 +144,55 @@ export default function Header() {
           {/* Navigation Links */}
           <div className="flex-1 px-6 py-4">
             {navItems.map((item, index) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="flex items-center justify-between py-4 text-black font-jost text-xl border-b border-black/10 hover:text-[#F15B19] transition-colors group"
-              >
-                <span>{item.label}</span>
-                <ChevronRight size={20} className="text-gray-400 group-hover:text-[#F15B19] group-hover:translate-x-1 transition-all" />
-              </Link>
+              item.disabled ? (
+                <div
+                  key={item.href}
+                  className="flex items-center justify-between py-4 text-gray-400 font-jost text-xl border-b border-black/10 cursor-not-allowed"
+                >
+                  <span>{item.label}</span>
+                  <ChevronRight size={20} className="text-gray-300" />
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-between py-4 text-black font-jost text-xl border-b border-black/10 hover:text-[#F15B19] transition-colors group"
+                >
+                  <span>{item.label}</span>
+                  <ChevronRight size={20} className="text-gray-400 group-hover:text-[#F15B19] group-hover:translate-x-1 transition-all" />
+                </Link>
+              )
             ))}
+            
+            {/* Mobile Get a Quote Button */}
+            <button
+              onClick={() => {
+                setLeadOpen(true);
+                setOpen(false);
+              }}
+              className="w-full flex items-center justify-between py-4 text-black font-jost text-xl border-b border-black/10 hover:text-[#F15B19] transition-colors group"
+            >
+              <span>CONTACT US</span>
+              <ChevronRight size={20} className="text-gray-400 group-hover:text-[#F15B19] group-hover:translate-x-1 transition-all" />
+            </button>
           </div>
 
           {/* Contact Section */}
           <div className="px-6 pt-4 pb-6 bg-[#FFE4D0] mt-auto">
             <p className="text-sm text-gray-600 mb-3 font-medium">Ready to start your event?</p>
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
+            <button
+              onClick={() => {
+                setLeadOpen(true);
+                setOpen(false);
+              }}
               className="flex items-center justify-between w-full bg-[#F15B19] text-white px-6 py-4 rounded-xl text-lg font-medium
               shadow-lg shadow-[#F15B19]/30
               hover:bg-orange-600 active:scale-[0.98] transition-all duration-200"
             >
-              <span>Contact Us</span>
+              <span>CONTACT US</span>
               <ChevronRight size={22} />
-            </Link>
+            </button>
             
             {/* Social or additional links can go here */}
             <div className="flex justify-center gap-6 mt-6 text-sm text-gray-500">
@@ -178,6 +212,9 @@ export default function Header() {
           aria-hidden="true"
         />
       )}
+
+      {/* Lead Popup */}
+      <Lead open={leadOpen} onClose={() => setLeadOpen(false)} />
     </>
   );
 }

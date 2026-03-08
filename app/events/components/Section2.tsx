@@ -2,11 +2,17 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { ChevronRight, Utensils, Sparkles } from "lucide-react";
+import { ChevronRight, Utensils, Sparkles, Star } from "lucide-react";
 import Classic from "@/app/events/modals/Classic";
+import Signature from "@/app/events/modals/Signature";
+import Premium from "@/app/events/modals/Premium";
+import Upgrades from "@/app/events/modals/Upgrades";
 
 export default function Section2() {
   const [openClassic, setOpenClassic] = useState(false);
+  const [openSignature, setOpenSignature] = useState(false);
+  const [openPremium, setOpenPremium] = useState(false);
+  const [openUpgrades, setOpenUpgrades] = useState(false);
 
   const items = [
     {
@@ -19,14 +25,23 @@ export default function Section2() {
     {
       title: "SIGNATURE SELECTION",
       image: "/events/sections/Section2x2.png",
+      action: () => setOpenSignature(true),
       description: "Our chef's specially curated signature dishes",
       icon: <Sparkles size={20} />,
     },
     {
       title: "PREMIUM SELECTION",
       image: "/events/sections/Section2x3.png",
+      action: () => setOpenPremium(true),
       description: "Elevated offerings for the most discerning palates",
       icon: <Sparkles size={20} />,
+    },
+    {
+      title: "BUFFET UPGRADES",
+      image: "/events/sections/Section2x4.png",
+      action: () => setOpenUpgrades(true),
+      description: "Enhance your buffet experience with premium additions",
+      icon: <Star size={20} />,
     },
   ];
 
@@ -44,8 +59,8 @@ export default function Section2() {
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-4 sm:px-6 md:px-8">
+        {/* Cards - Updated grid for 4 columns on desktop */}
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 px-4 sm:px-6 md:px-8">
           {items.map((item, i) => (
             <div
               key={i}
@@ -58,7 +73,7 @@ export default function Section2() {
                 alt={item.title}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 768px) 100vw, 33vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
               />
 
               {/* Dark overlay */}
@@ -69,7 +84,7 @@ export default function Section2() {
                 
                 {/* Desktop Title - Centered Bottom */}
                 <div className="hidden md:flex w-full justify-center">
-                  <h3 className="font-jost underline decoration-4 underline-offset-8 text-[42px] font-normal leading-tight text-center">
+                  <h3 className="font-jost underline decoration-4 underline-offset-8 text-[32px] lg:text-[42px] font-normal leading-tight text-center">
                     {item.title}
                   </h3>
                 </div>
@@ -118,8 +133,11 @@ export default function Section2() {
         </div>
       </section>
 
-      {/* Classic Modal */}
+      {/* Modals */}
       <Classic open={openClassic} onClose={() => setOpenClassic(false)} />
+      <Signature open={openSignature} onClose={() => setOpenSignature(false)} />
+      <Premium open={openPremium} onClose={() => setOpenPremium(false)} />
+      <Upgrades open={openUpgrades} onClose={() => setOpenUpgrades(false)} />
     </>
   );
 }

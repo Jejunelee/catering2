@@ -52,10 +52,12 @@ export default function Footer() {
               Get in touch
             </p>
 
-            {/* Social Icons - more spread out with extra width */}
+            {/* Social Icons with correct links */}
             <div className="flex gap-3 md:gap-4">
               <a 
-                href="#" 
+                href="https://web.facebook.com/profile.php?id=61566411753625"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#FF8400] flex items-center justify-center hover:bg-orange-600 transition-colors active:scale-95"
                 aria-label="Facebook"
               >
@@ -63,7 +65,9 @@ export default function Footer() {
               </a>
 
               <a 
-                href="#" 
+                href="https://www.instagram.com/cravingsphils/?hl=en"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#FF8400] flex items-center justify-center hover:bg-orange-600 transition-colors active:scale-95"
                 aria-label="Instagram"
               >
@@ -71,17 +75,19 @@ export default function Footer() {
               </a>
 
               <a 
-                href="#" 
+                href="tel:09626281582"
                 className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#FF8400] flex items-center justify-center hover:bg-orange-600 transition-colors active:scale-95"
                 aria-label="Phone"
+                title="Call 0962 628 1582"
               >
                 <Phone size={16} className="md:size-[18px]" />
               </a>
 
               <a 
-                href="#" 
+                href="mailto:wecater@cravingsgroup.com"
                 className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#FF8400] flex items-center justify-center hover:bg-orange-600 transition-colors active:scale-95"
                 aria-label="Email"
+                title="Email wecater@cravingsgroup.com"
               >
                 <Mail size={16} className="md:size-[18px]" />
               </a>

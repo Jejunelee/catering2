@@ -10,7 +10,7 @@ export default function Section() {
       {/* Background Image with overlay for better text contrast */}
       <div className="absolute inset-0">
         <Image
-          src="/SectBG.png"
+          src="/landing/section/SectionBG.png"
           alt="Catering background"
           fill
           priority
@@ -30,13 +30,13 @@ export default function Section() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           
           {/* Card 1 - Mobile: rectangle, Desktop: 30% smaller square */}
-          <Link href="/events/catering/full-service" className="w-full">
-            <div className="relative bg-white/95 backdrop-blur-md rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center hover:shadow-2xl transition-all duration-300 cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0">
+          <Link href="/events" className="w-full block group">
+            <div className="relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95">
               
               {/* Orange accent line */}
-              <div className="w-12 md:w-8 h-1 md:h-0.5 bg-[#E25D1F] rounded-full mb-3 md:mb-2.5"></div>
+              <div className="w-12 md:w-8 h-1 md:h-0.5 bg-[#E25D1F] rounded-full mb-3 md:mb-2.5 transition-all duration-300 group-hover:w-16 md:group-hover:w-12"></div>
               
-              <h3 className="text-[#E25D1F] font-bold text-xl md:text-[28px] leading-tight px-1">
+              <h3 className="text-[#E25D1F] font-bold text-xl md:text-[28px] leading-tight px-1 transition-all duration-300 group-hover:scale-105">
                 FULL SERVICE <br className="hidden md:block" /> CATERING
               </h3>
               
@@ -46,14 +46,14 @@ export default function Section() {
               </p>
               
               {/* Desktop description - 30% smaller text */}
-              <p className="hidden md:block mt-2.5 text-neutral-900 leading-snug text-[14px] px-2">
+              <p className="hidden md:block mt-2.5 text-neutral-900 leading-snug text-[14px] px-2 transition-all duration-300 group-hover:scale-105 group-hover:text-neutral-800">
                 Elevated, full-service catering for gatherings big or small, serving classics or elevated dishes made with care.
               </p>
               
               {/* Mobile touch indicator */}
               <span className="md:hidden text-[#E25D1F] text-lg font-medium mt-2 flex items-center gap-1">
                 Tap to learn more 
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-300 group-hover:translate-x-1">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
               </span>
@@ -61,12 +61,12 @@ export default function Section() {
           </Link>
 
           {/* Card 2 */}
-          <Link href="/events/catering/event" className="w-full">
-            <div className="relative bg-white/95 backdrop-blur-md rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center hover:shadow-2xl transition-all duration-300 cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0">
+          <Link href="/foodtrays" className="w-full block group">
+            <div className="relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95">
               
-              <div className="w-12 md:w-8 h-1 md:h-0.5 bg-[#E25D1F] rounded-full mb-3 md:mb-2.5"></div>
+              <div className="w-12 md:w-8 h-1 md:h-0.5 bg-[#E25D1F] rounded-full mb-3 md:mb-2.5 transition-all duration-300 group-hover:w-16 md:group-hover:w-12"></div>
               
-              <h3 className="text-[#E25D1F] font-bold text-xl md:text-[28px] leading-tight px-1">
+              <h3 className="text-[#E25D1F] font-bold text-xl md:text-[28px] leading-tight px-1 transition-all duration-300 group-hover:scale-105">
                 EVENT <br className="hidden md:block" /> CATERING
               </h3>
               
@@ -74,13 +74,13 @@ export default function Section() {
                 Fresh Cravings favorites delivered to your door
               </p>
               
-              <p className="hidden md:block mt-2.5 text-neutral-900 leading-snug text-[14px] px-2">
+              <p className="hidden md:block mt-2.5 text-neutral-900 leading-snug text-[14px] px-2 transition-all duration-300 group-hover:scale-105 group-hover:text-neutral-800">
                 Fresh Cravings favorites delivered to your door, so you can enjoy good food with family, friends, or your team.
               </p>
               
               <span className="md:hidden text-[#E25D1F] text-lg font-medium mt-2 flex items-center gap-1">
                 Tap to learn more 
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-300 group-hover:translate-x-1">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
               </span>
@@ -88,12 +88,12 @@ export default function Section() {
           </Link>
 
           {/* Card 3 */}
-          <Link href="/events/venues" className="w-full">
-            <div className="relative bg-white/95 backdrop-blur-md rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center hover:shadow-2xl transition-all duration-300 cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0">
+          <Link href="/venues" className="w-full block group">
+            <div className="relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95">
               
-              <div className="w-12 md:w-8 h-1 md:h-0.5 bg-[#E25D1F] rounded-full mb-3 md:mb-2.5"></div>
+              <div className="w-12 md:w-8 h-1 md:h-0.5 bg-[#E25D1F] rounded-full mb-3 md:mb-2.5 transition-all duration-300 group-hover:w-16 md:group-hover:w-12"></div>
               
-              <h3 className="text-[#E25D1F] font-bold text-xl md:text-[28px] leading-tight px-1">
+              <h3 className="text-[#E25D1F] font-bold text-xl md:text-[28px] leading-tight px-1 transition-all duration-300 group-hover:scale-105">
                 EVENT <br className="hidden md:block" /> VENUES
               </h3>
               
@@ -101,13 +101,13 @@ export default function Section() {
                 Refined spaces for weddings and celebrations
               </p>
               
-              <p className="hidden md:block mt-2.5 text-neutral-900 leading-snug text-[14px] px-2">
+              <p className="hidden md:block mt-2.5 text-neutral-900 leading-snug text-[14px] px-2 transition-all duration-300 group-hover:scale-105 group-hover:text-neutral-800">
                 Refined and versatile spaces ideal for weddings, corporate functions, and meaningful celebrations.
               </p>
               
               <span className="md:hidden text-[#E25D1F] text-lg font-medium mt-2 flex items-center gap-1">
                 Tap to learn more 
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-300 group-hover:translate-x-1">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
               </span>

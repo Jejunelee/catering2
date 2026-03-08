@@ -1,10 +1,66 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Quotes() {
   const [expandedSection, setExpandedSection] = useState<number | null>(null);
+  
+  // Carousel images array
+  const carouselImages = [
+    "/landing/quotes/Quotes-1.jpg",
+    "/landing/quotes/Quotes-2.jpg",
+    "/landing/quotes/Quotes-3.jpg",
+  ];
+
+  // Carousel state
+  const [index, setIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Navigation functions
+  const prev = () => {
+    setIndex((i) => (i === 0 ? carouselImages.length - 1 : i - 1));
+  };
+
+  const next = () => {
+    setIndex((i) => (i === carouselImages.length - 1 ? 0 : i + 1));
+  };
+
+  // Swipe handling for mobile
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe) next();
+    if (isRightSwipe) prev();
+  };
+
+  // Auto carousel (desktop only)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
+    
+    const interval = setInterval(() => {
+      setIndex((i) => (i === carouselImages.length - 1 ? 0 : i + 1));
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
 
   const mobileSections = [
     {
@@ -32,15 +88,70 @@ export default function Quotes() {
     <section className="w-full bg-white py-12 md:py-16 lg:py-20">
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-2 gap-6 md:gap-12 lg:gap-16 items-stretch">
         
-        {/* Left Image */}
+        {/* Left Image Carousel */}
         <div className="relative w-full h-[260px] sm:h-[340px] md:h-auto md:aspect-[3/3.2] rounded-md overflow-hidden">
-          <Image
-            src="/Quotes.png"
-            alt="Roasted pork dish"
-            fill
-            className="object-cover"
-            priority
+          {/* Carousel Images */}
+          {carouselImages.map((src, i) => (
+            <Image
+              key={src}
+              src={src}
+              alt={`Food dish ${i + 1}`}
+              fill
+              priority={i === 0}
+              className={`object-cover transition-opacity duration-1000 ${
+                i === index ? "opacity-100" : "opacity-0"
+              }`}
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          ))}
+
+          {/* Desktop Chevron Controls - Same style as EventGallery */}
+          <div className="hidden md:flex absolute bottom-0 left-1/2 -translate-x-1/2 z-20 items-center justify-between h-[40px] w-[90px] bg-black shadow-md">
+            <button 
+              onClick={prev} 
+              className="hover:bg-[#F15B19] transition p-2 text-white"
+              aria-label="Previous image"
+            >
+              <ChevronLeft size={28} />
+            </button>
+            <button 
+              onClick={next} 
+              className="hover:bg-[#F15B19] transition p-2 text-white"
+              aria-label="Next image"
+            >
+              <ChevronRight size={28} />
+            </button>
+          </div>
+
+          {/* Mobile Touch Handlers */}
+          <div
+            className="absolute inset-0 z-10 md:hidden"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
           />
+
+          {/* Mobile Chevron Controls - Positioned to avoid overlap */}
+          <button
+            onClick={prev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-black/80 text-white p-2 transition-all md:hidden rounded-r-lg"
+            aria-label="Previous image"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          
+          <button
+            onClick={next}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-black/80 text-white p-2 transition-all md:hidden rounded-l-lg"
+            aria-label="Next image"
+          >
+            <ChevronRight size={24} />
+          </button>
+
+          {/* Image Counter for mobile */}
+          <div className="absolute top-2 right-2 z-20 bg-black/60 text-white text-xs px-2 py-1 rounded-full md:hidden">
+            {index + 1}/{carouselImages.length}
+          </div>
         </div>
 
         {/* Right Content */}

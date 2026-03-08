@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Lead from "@/app/events/modals/Lead";
 
 export default function Hero() {
-  const images = ["/Hero.png", "/Hero2.png"];
+  const images = ["/landing/hero/Hero1.png", "/landing/hero/Hero2.jpg","/landing/hero/Hero3.jpg","/landing/hero/Hero4.jpg"];
   const [index, setIndex] = useState(0);
   const [leadOpen, setLeadOpen] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -46,7 +46,7 @@ export default function Hero() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((i) => (i === images.length - 1 ? 0 : i + 1));
-    }, 4500);
+    }, 1500);
 
     return () => clearInterval(interval);
   }, [images.length]);

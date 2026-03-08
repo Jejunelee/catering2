@@ -7,8 +7,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 export default function Section2() {
   const images = [
     "/gifts/sections/Section2x1.png",
-    "/gifts/sections/Section2x1.png",
-    "/gifts/sections/Section2x1.png",
+    "/gifts/sections/Section2x2.jpg",
+    "/gifts/sections/Section2x3.jpg",
+    "/gifts/sections/Section2x4.jpg",
+    "/gifts/sections/Section2x5.jpg",
   ];
 
   const [index, setIndex] = useState(0);

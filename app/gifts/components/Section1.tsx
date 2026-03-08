@@ -1,37 +1,39 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import { ChevronRight, Sparkles, Gift, Star } from "lucide-react";
-import Classic from "@/app/events/modals/Classic";
 
 export default function Section2() {
-  const [openClassic, setOpenClassic] = useState(false);
-
   const items = [
     {
-      title: "CLASSIC\nCRAVINGS",
+      title: "BASKETS &\nHAMPERS",
       description: "Timeless favorites crafted to perfection",
       image: "/gifts/sections/Section1-1.png",
-      action: () => setOpenClassic(true),
+      link: "https://cravingskitchenph.com/collections/all",
       icon: <Star size={28} />,
       color: "from-[#FF4D00] to-[#FF8400]"
     },
     {
-      title: "SIGNATURE\nSELECTION",
+      title: "DELUXE GIFT\nBOXES",
       description: "Our most beloved and sought-after treats",
       image: "/gifts/sections/Section1-2.png",
+      link: "https://cravingskitchenph.com/collections/all",
       icon: <Sparkles size={28} />,
       color: "from-[#FF4D00] to-[#FF8400]"
     },
     {
-      title: "PREMIUM\nSELECTION",
+      title: "PASTRIES &\nCHOCOLATES",
       description: "Exquisite offerings for the discerning palate",
       image: "/gifts/sections/Section1-3.png",
+      link: "https://cravingskitchenph.com/collections/all",
       icon: <Gift size={28} />,
       color: "from-[#FF4D00] to-[#FF8400]"
     },
   ];
+
+const handleClick = (link: string) => {
+  window.location.href = link;
+};
 
   return (
     <>
@@ -48,7 +50,7 @@ export default function Section2() {
           {items.map((item, i) => (
             <div
               key={i}
-              onClick={item.action}
+              onClick={() => handleClick(item.link)}
               className="group relative h-[500px] md:h-[600px] overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer 
               shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
             >
@@ -91,7 +93,7 @@ export default function Section2() {
                 <div className="opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-200">
                   <button className="bg-white text-[#633300] px-6 py-2 rounded-full font-jost text-sm font-medium
                   flex items-center gap-2 hover:bg-[#FF8400] hover:text-white transition-colors duration-300 shadow-lg">
-                    <span>Explore</span>
+                    <span>Go to Shop</span>
                     <ChevronRight size={16} />
                   </button>
                 </div>
@@ -126,9 +128,6 @@ export default function Section2() {
           ))}
         </div>
       </section>
-
-      {/* Classic Modal */}
-      <Classic open={openClassic} onClose={() => setOpenClassic(false)} />
     </>
   );
 }

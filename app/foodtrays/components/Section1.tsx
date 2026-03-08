@@ -3,32 +3,29 @@
 import Image from "next/image";
 import { useState } from "react";
 import { ChevronRight, UtensilsCrossed, PackageOpen } from "lucide-react";
-import Action from "@/app/events/modals/Action";
 
 export default function Section1() {
-  const [openAction, setOpenAction] = useState(false);
-
   const sections = [
     {
       bgColor: "bg-[#FF8400]",
       title: "Party Trays",
       description: "Our customizable party trays feature a delectable assortment of appetizers, main courses, and desserts, crafted with the finest ingredients and culinary expertise.",
-      image: "/events/sections/Section1x1.png",
+      image: "/foodtrays/sections/Section1x1.png",
       alt: "Party Trays",
       button: true,
       icon: <UtensilsCrossed size={24} />,
-      modalAction: () => setOpenAction(true),
+      modalAction: () => console.log("Party Trays button clicked"),
       textColor: "text-white"
     },
     {
       bgColor: "bg-[#633300]",
       title: "Packed Meals",
       description: "Our packed meals offer a delicious and hassle-free dining experience. Whether you're on-the-go or want a convenient meal at home, our packed meals are the perfect solution.",
-      image: "/events/sections/Section1x1.png",
+      image: "/foodtrays/sections/Section1x2.png",
       alt: "Packed Meals",
       button: true,
       icon: <PackageOpen size={24} />,
-      modalAction: () => setOpenAction(true),
+      modalAction: () => console.log("Packed Meals button clicked"),
       textColor: "text-white"
     }
   ];
@@ -78,7 +75,7 @@ export default function Section1() {
                       hover:bg-white hover:text-black transition-colors duration-300 
                       flex items-center gap-2 shadow-lg"
                     >
-                      <span>ORDER NOW</span>
+                      <span>DOWNLOAD MENU</span>
                       <ChevronRight size={20} />
                     </button>
                   )}
@@ -112,7 +109,7 @@ export default function Section1() {
                   onClick={sections[0].modalAction}
                   className="font-jost border-3 border-white px-5 py-1 text-[28px] tracking-wider hover:bg-white hover:text-black transition-colors duration-300"
                 >
-                  ORDER NOW
+                  DOWNLOAD MENU
                 </button>
               )}
             </div>
@@ -131,7 +128,7 @@ export default function Section1() {
                   onClick={sections[1].modalAction}
                   className="font-jost border-3 border-white px-5 py-1 text-[28px] tracking-wider hover:bg-white hover:text-black transition-colors duration-300"
                 >
-                  ORDER NOW
+                  DOWNLOAD MENU
                 </button>
               )}
             </div>
@@ -150,7 +147,7 @@ export default function Section1() {
         {/* Bottom CTA */}
         <div className="max-w-[1200px] mx-auto mt-6 md:mt-10 px-4 md:px-0">
           <button 
-            onClick={() => setOpenAction(true)}
+            onClick={() => console.log("Full menu button clicked")}
             className="font-jost text-xl md:text-[36px] underline decoration-2 md:decoration-3 underline-offset-4 w-full bg-black text-white py-4 md:py-5 
             hover:bg-gray-900 transition-colors duration-300 md:rounded-none shadow-lg md:shadow-none
             flex items-center justify-center gap-2"
@@ -160,9 +157,6 @@ export default function Section1() {
           </button>
         </div>
       </section>
-
-      {/* Action Modal */}
-      <Action open={openAction} onClose={() => setOpenAction(false)} />
     </>
   );
 }
