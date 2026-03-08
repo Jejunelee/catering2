@@ -81,11 +81,11 @@ export default function Lead({ open, onClose }: LeadProps) {
         <div className="bg-[#F26522] text-white p-5 flex flex-col md:p-8">
           
           {/* Logo - Smaller on mobile */}
-          <div className="flex justify-center md:justify-start mb-3">
+          <div className="flex justify-center md:justify-start mb-1">
             <Image
               src="/LogoWhite.png"
               alt="Cravings Logo"
-              width={120}
+              width={60}
               height={36}
               className="brightness-100 md:hidden"
             />
@@ -99,22 +99,22 @@ export default function Lead({ open, onClose }: LeadProps) {
           </div>
 
           {/* Title - Compact */}
-          <h2 className="text-2xl md:text-4xl font-medium mb-2 text-white text-center md:text-left">
+          <h2 className="text-2xl md:text-4xl font-medium text-white text-center md:text-left">
             Plan Your Event
           </h2>
 
           {/* Description - Condensed */}
-          <p className="text-sm md:text-base text-white/90 leading-relaxed text-center md:text-left mb-3">
+          <p className="text-sm md:text-base text-white/90 leading-relaxed text-center md:text-left mb-1">
             Tell us about your event and our specialists will help craft the perfect menu. We will respond to you in 24 hours.
           </p>
 
           {/* Mobile Progress Steps */}
-          <div className="md:hidden mt-2">
+          <div className="md:hidden mt-1">
             <div className="flex justify-between items-center">
               {[1, 2, 3, 4].map((s) => (
                 <div key={s} className="flex flex-col items-center flex-1">
                   <div 
-                    className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
+                    className={`w-4 h-4 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
                       s === step 
                         ? "bg-white text-[#F26522]" 
                         : s < step 
@@ -132,7 +132,7 @@ export default function Lead({ open, onClose }: LeadProps) {
                 </div>
               ))}
             </div>
-            <p className="text-center text-xs text-white/80 mt-2">
+            <p className="text-center text-xs text-white/80 mt-1">
               {step === 1 && "Contact Information"}
               {step === 2 && "Phone Number (Optional)"}
               {step === 3 && "Event Details"}

@@ -97,9 +97,9 @@ export default function Section3() {
           </div>
 
           {/* Desktop Layout (staggered grid) - hidden on mobile */}
-          <div className="hidden md:grid grid-cols-2">
+          <div className="hidden md:grid grid-cols-2 auto-rows-fr">
             {/* Row 1: Image | Content */}
-            <div className="relative h-[485px] w-full">
+            <div className="relative w-full h-full min-h-[450px]">
               <Image
                 src={sections[0].image}
                 alt={sections[0].alt}
@@ -108,7 +108,7 @@ export default function Section3() {
                 sizes="50vw"
               />
             </div>
-            <div className={`${sections[0].bgColor} ${sections[0].textColor} flex flex-col justify-center items-center text-center px-12 py-16`}>
+            <div className={`${sections[0].bgColor} ${sections[0].textColor} flex flex-col justify-center items-center text-center px-12 py-12 h-full`}>
               <div className="mb-4">{sections[0].icon}</div>
               <h3 className="font-brisa italic text-[70px] font-light leading-tight mb-4">
                 {sections[0].title}
@@ -127,7 +127,7 @@ export default function Section3() {
             </div>
 
             {/* Row 2: Content | Image (staggered) */}
-            <div className={`${sections[1].bgColor} ${sections[1].textColor} flex flex-col justify-center items-center text-center px-12 py-16`}>
+            <div className={`${sections[1].bgColor} ${sections[1].textColor} flex flex-col justify-center items-center text-center px-12 py-12 h-full`}>
               <div className="mb-4">{sections[1].icon}</div>
               <h3 className="font-brisa italic text-[70px] font-light leading-tight mb-4">
                 {sections[1].title}
@@ -136,7 +136,7 @@ export default function Section3() {
                 {sections[1].description}
               </p>
             </div>
-            <div className="relative h-[450px] w-full">
+            <div className="relative w-full h-full min-h-[450px]">
               <Image
                 src={sections[1].image}
                 alt={sections[1].alt}
@@ -147,7 +147,7 @@ export default function Section3() {
             </div>
 
             {/* Row 3: Image | Content */}
-            <div className="relative h-[450px] w-full">
+            <div className="relative w-full h-full min-h-[450px]">
               <Image
                 src={sections[2].image}
                 alt={sections[2].alt}
@@ -156,7 +156,7 @@ export default function Section3() {
                 sizes="50vw"
               />
             </div>
-            <div className={`${sections[2].bgColor} ${sections[2].textColor} flex flex-col justify-center items-center text-center px-12 py-16`}>
+            <div className={`${sections[2].bgColor} ${sections[2].textColor} flex flex-col justify-center items-center text-center px-12 py-12 h-full`}>
               <div className="mb-4">{sections[2].icon}</div>
               <h3 className="font-brisa italic text-[70px] font-light leading-tight mb-4">
                 {sections[2].title}
