@@ -13,7 +13,7 @@ export default function Footer() {
           {/* Logo - reduced size */}
           <div className="relative w-[200px] md:w-[300px] h-auto">
             <Image
-              src="/LogoCater.png"
+              src="/MainLogo.png"
               alt="Cravings Logo"
               width={400}
               height={126}
