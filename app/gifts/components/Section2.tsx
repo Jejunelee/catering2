@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Lead from "@/app/events/modals/Lead"; // Import the Lead component
 
 export default function Section2() {
   const images = [
@@ -16,6 +17,7 @@ export default function Section2() {
   const [index, setIndex] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [leadOpen, setLeadOpen] = useState(false); // Add state for lead popup
 
   const prev = () => {
     setIndex((i) => (i === 0 ? images.length - 1 : i - 1));
@@ -56,10 +58,24 @@ export default function Section2() {
     return () => clearInterval(interval);
   }, [images.length]);
 
+  // Function to handle PDF download
+  const downloadPDF = (pdfPath: string, fileName: string): void => {
+    const link = document.createElement('a');
+    link.href = pdfPath;
+    link.download = fileName || 'Catalog.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Handler for concierge button click
+  const handleConciergeClick = () => {
+    setLeadOpen(true);
+  };
+
   return (
     <section className="w-full relative overflow-hidden bg-white">
       
-
       {/* Desktop Layout */}
       <div className="hidden md:flex w-full items-stretch">
         {/* LEFT PANEL - 30% smaller */}
@@ -75,9 +91,20 @@ export default function Section2() {
             how we've transformed ordinary gifts into unforgettable experiences.
           </p>
 
-          <button className="font-jost border-2 border-white px-8 py-2.5 text-[20px] tracking-widest hover:bg-white hover:text-[#FF8400] transition w-fit">
-            TALK TO OUR GIFT CONCIERGE
-          </button>
+          <div className="flex gap-4">
+            <button 
+              onClick={handleConciergeClick} // Add click handler
+              className="font-jost border-2 border-white px-8 py-2.5 text-[20px] tracking-widest hover:bg-white hover:text-[#FF8400] transition w-fit"
+            >
+              TALK TO CONCIERGE
+            </button>
+            <button 
+              onClick={() => downloadPDF("/files/Catalog.pdf", "Catalog.pdf")}
+              className="font-jost bg-white text-[#FF8400] px-8 py-2.5 text-[20px] tracking-widest hover:bg-white/90 transition w-fit"
+            >
+              VIEW CATALOG
+            </button>
+          </div>
         </div>
 
         {/* RIGHT IMAGE CAROUSEL */}
@@ -178,12 +205,26 @@ export default function Section2() {
             ordinary gifts into unforgettable experiences.
           </p>
 
-          {/* Mobile CTA - Simple button */}
-          <button className="w-full bg-white text-[#FF8400] font-jost py-3 font-medium text-base hover:bg-white/90 transition">
-            TALK TO OUR GIFT CONCIERGE
-          </button>
+          {/* Mobile CTA Buttons */}
+          <div className="flex flex-col gap-3">
+            <button 
+              onClick={handleConciergeClick} // Add click handler
+              className="w-full bg-white text-[#FF8400] font-jost py-3 font-medium text-base hover:bg-white/90 transition"
+            >
+              TALK TO CONCIERGE
+            </button>
+            <button 
+              onClick={() => downloadPDF("/files/Catalog.pdf", "Catalog.pdf")}
+              className="w-full border-2 border-white text-white font-jost py-3 font-medium text-base hover:bg-white hover:text-[#FF8400] transition"
+            >
+              VIEW CATALOG
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Lead Popup */}
+      <Lead open={leadOpen} onClose={() => setLeadOpen(false)} />
     </section>
   );
 }

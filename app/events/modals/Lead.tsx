@@ -178,7 +178,7 @@ export default function Lead({ open, onClose, initialDate }: LeadProps) {
 
           {/* Title */}
           <h2 className="text-2xl md:text-4xl font-medium text-white text-center md:text-left">
-            Plan Your Event
+            Catering Made For You
           </h2>
 
           {/* Description */}

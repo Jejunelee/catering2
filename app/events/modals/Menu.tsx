@@ -18,6 +18,16 @@ export default function Menu({ open, onClose }: MenuProps) {
     "Flexible for any budget"
   ];
 
+  // Function to handle PDF download
+  const downloadPDF = (pdfPath: string, fileName: string): void => {
+    const link = document.createElement('a');
+    link.href = pdfPath;
+    link.download = fileName || 'PremiumMenu.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 font-jost backdrop-blur-sm">
       
@@ -91,14 +101,20 @@ export default function Menu({ open, onClose }: MenuProps) {
             </div>
 
             {/* Download Menu Button - Desktop */}
-            <button className="hidden md:flex items-center justify-center gap-2 bg-white text-[#F5821F] px-6 py-3 rounded-lg font-medium hover:bg-white/90 transition-colors mt-6 w-fit">
+            <button 
+              onClick={() => downloadPDF("/files/PremiumMenu.pdf", "PremiumMenu.pdf")}
+              className="hidden md:flex items-center justify-center gap-2 bg-white text-[#F5821F] px-6 py-3 rounded-lg font-medium hover:bg-white/90 transition-colors mt-6 w-fit"
+            >
               <Download size={20} />
               <span>Download Menu</span>
             </button>
 
             {/* Mobile Buttons */}
             <div className="md:hidden mt-4 space-y-2">
-              <button className="w-full bg-white text-[#F5821F] py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1">
+              <button 
+                onClick={() => downloadPDF("/files/PremiumMenu.pdf", "PremiumMenu.pdf")}
+                className="w-full bg-white text-[#F5821F] py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1"
+              >
                 <Download size={16} />
                 <span>Download Menu</span>
               </button>

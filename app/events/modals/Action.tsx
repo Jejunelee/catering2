@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { X, ChevronRight, Coffee, Wine, Utensils, Sparkles } from "lucide-react";
+import { X, Coffee, Wine, Utensils, Sparkles } from "lucide-react";
 
 interface ActionProps {
   open: boolean;
@@ -63,7 +63,6 @@ export default function Action({ open, onClose }: ActionProps) {
                 >
                   <span className="mt-0.5 text-white/70 flex-shrink-0">{item.icon}</span>
                   <span className="flex-1">{item.name}</span>
-                  <ChevronRight size={12} className="text-white/50 flex-shrink-0" />
                 </div>
               ))}
             </div>

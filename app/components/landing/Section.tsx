@@ -49,7 +49,7 @@ export default function Section() {
       </div>
 
       {/* Content Container */}
-      <div className="font-jost relative z-10 max-w-[1200px] mx-auto px-3 sm:px-6 md:px-8 py-4 md:py-4 w-full">
+      <div className="font-jost relative z-10 max-w-[1200px] mx-auto px-3 sm:px-6 md:px-4 py-4 md:py-4 w-full">
         
         {/* Mobile Section Title - visible only on mobile */}
         <h2 className={`md:hidden text-white text-2xl font-medium mb-4 text-center drop-shadow-lg transition-all duration-700 delay-100 ${
@@ -58,11 +58,11 @@ export default function Section() {
           Our Services
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-x-16">
           
           {/* Card 1 */}
           <Link href="/events" className="w-full block group">
-            <div className={`relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95 ${
+            <div className={`relative bg-[#f5e6da]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95 ${
               isInView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
             }`}
             style={{ transitionDelay: isInView ? '200ms' : '0ms' }}>
@@ -96,7 +96,7 @@ export default function Section() {
 
           {/* Card 2 */}
           <Link href="/foodtrays" className="w-full block group">
-            <div className={`relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95 ${
+            <div className={`relative bg-[#f5e6da]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#f5e6da]/95 ${
               isInView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
             }`}
             style={{ transitionDelay: isInView ? '400ms' : '0ms' }}>
@@ -126,7 +126,7 @@ export default function Section() {
 
           {/* Card 3 */}
           <Link href="/venues" className="w-full block group">
-            <div className={`relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95 ${
+            <div className={`relative bg-[#f5e6da]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95 ${
               isInView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
             }`}
             style={{ transitionDelay: isInView ? '600ms' : '0ms' }}>

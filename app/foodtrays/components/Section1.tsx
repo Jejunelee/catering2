@@ -1,9 +1,41 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import { ChevronRight, UtensilsCrossed, PackageOpen } from "lucide-react";
 
 export default function Section1() {
+  // Add carousel images array for each section
+  const sectionImages = [
+    [
+      "/foodtrays/sections/partytrays/1.png",
+      "/foodtrays/sections/partytrays/2.png",
+      "/foodtrays/sections/partytrays/3.png",
+      "/foodtrays/sections/partytrays/4.png",
+    ],
+    [
+      "/foodtrays/sections/packedmeals/1.png",
+      "/foodtrays/sections/packedmeals/2.png",
+      "/foodtrays/sections/packedmeals/3.png",
+    ]
+  ];
+
+  // Add carousel state for each section
+  const [indexes, setIndexes] = useState([0, 0]);
+
+  // Auto carousel for each section (desktop only)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
+    
+    const interval = setInterval(() => {
+      setIndexes(prev => prev.map((idx, i) => 
+        idx === sectionImages[i].length - 1 ? 0 : idx + 1
+      ));
+    }, 1600);
+
+    return () => clearInterval(interval);
+  }, []);
+
   // Define interface for section items
   interface SectionItem {
     bgColor: string;
@@ -27,7 +59,7 @@ export default function Section1() {
       alt: "Party Trays",
       button: true,
       icon: <UtensilsCrossed size={24} />,
-      pdfPath: "/files/Sample1.pdf",
+      pdfPath: "/files/PartyTrays.pdf",
       fileName: "Party-Trays-Menu.pdf",
       textColor: "text-white"
     },
@@ -39,7 +71,7 @@ export default function Section1() {
       alt: "Packed Meals",
       button: true,
       icon: <PackageOpen size={24} />,
-      pdfPath: "/files/Sample1.pdf",
+      pdfPath: "/files/PackedMeals.pdf",
       fileName: "Packed-Meals-Menu.pdf",
       textColor: "text-white"
     }
@@ -73,13 +105,18 @@ export default function Section1() {
               <div key={index} className="flex flex-col">
                 {/* Image */}
                 <div className="relative h-[220px] w-full">
-                  <Image
-                    src={section.image}
-                    alt={section.alt}
-                    fill
-                    className="object-cover"
-                    sizes="100vw"
-                  />
+                  {sectionImages[index].map((src, i) => (
+                    <Image
+                      key={src}
+                      src={src}
+                      alt={section.alt}
+                      fill
+                      className={`object-cover transition-opacity duration-1000 ${
+                        i === indexes[index] ? "opacity-100" : "opacity-0"
+                      }`}
+                      sizes="100vw"
+                    />
+                  ))}
                   <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-sm flex items-center gap-2">
                     {section.icon}
                     <span>{section.title}</span>
@@ -114,13 +151,18 @@ export default function Section1() {
           <div className="hidden md:grid grid-cols-2 auto-rows-fr">
             {/* Row 1: Image | Content */}
             <div className="relative w-full h-full min-h-[450px]">
-              <Image
-                src={sections[0].image}
-                alt={sections[0].alt}
-                fill
-                className="object-cover"
-                sizes="50vw"
-              />
+              {sectionImages[0].map((src, i) => (
+                <Image
+                  key={src}
+                  src={src}
+                  alt={sections[0].alt}
+                  fill
+                  className={`object-cover transition-opacity duration-1000 ${
+                    i === indexes[0] ? "opacity-100" : "opacity-0"
+                  }`}
+                  sizes="50vw"
+                />
+              ))}
             </div>
             <div className={`${sections[0].bgColor} ${sections[0].textColor} flex flex-col justify-center items-center text-center px-12 py-12 h-full`}>
               <div className="mb-4">{sections[0].icon}</div>
@@ -159,13 +201,18 @@ export default function Section1() {
               )}
             </div>
             <div className="relative w-full h-full min-h-[450px]">
-              <Image
-                src={sections[1].image}
-                alt={sections[1].alt}
-                fill
-                className="object-cover"
-                sizes="50vw"
-              />
+              {sectionImages[1].map((src, i) => (
+                <Image
+                  key={src}
+                  src={src}
+                  alt={sections[1].alt}
+                  fill
+                  className={`object-cover transition-opacity duration-1000 ${
+                    i === indexes[1] ? "opacity-100" : "opacity-0"
+                  }`}
+                  sizes="50vw"
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -173,7 +220,7 @@ export default function Section1() {
         {/* Bottom CTA */}
         <div className="max-w-[1200px] mx-auto mt-6 md:mt-10 px-4 md:px-0">
           <button 
-            onClick={() => downloadPDF("/files/Sample1.pdf", "Full-Menu.pdf")}
+            onClick={() => downloadPDF("/files/PTPM.pdf", "Full-Menu.pdf")}
             className="font-jost text-xl md:text-[36px] underline decoration-2 md:decoration-3 underline-offset-4 w-full bg-black text-white py-4 md:py-5 
             hover:bg-gray-900 transition-colors duration-300 md:rounded-none shadow-lg md:shadow-none
             flex items-center justify-center gap-2"
