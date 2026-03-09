@@ -11,18 +11,18 @@ export default function Section3() {
   // Add carousel images array for each section
   const sectionImages = [
     [
-      "/events/actionstations/1.png",
-      "/events/actionstations/2.png", // Add more images for Action Stations
+      "/events/actionstations/1-1.png",
+      "/events/actionstations/2-2.png", // Add more images for Action Stations
     ],
     [
-      "/events/eventstyling/1.png",
-      "/events/eventstyling/2.png", // Add more images for Events Styling
-      "/events/eventstyling/3.png",
+      "/events/eventstyling/1-1.png",
+      "/events/eventstyling/2-2.png", // Add more images for Events Styling
+      "/events/eventstyling/3-3.png",
     ],
     [
-      "/events/personalizedgifts/1.png",
-      "/events/personalizedgifts/2.png", // Add more images for Personalized Gifts
-      "/events/personalizedgifts/3.png",
+      "/events/personalizedgifts/11.png",
+      "/events/personalizedgifts/22.png", // Add more images for Personalized Gifts
+      "/events/personalizedgifts/33.png",
     ]
   ];
 
