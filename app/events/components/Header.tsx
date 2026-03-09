@@ -107,7 +107,7 @@ export default function Header() {
 
       </div>
 
-      {/* Bottom Section - Mobile Optimized */}
+      {/* Botto Section - Mobile Optimized */}
       <div className="relative w-full px-4 md:px-0 py-5 md:py-8 flex flex-col items-center justify-center text-center">
         
         {/* Title */}
