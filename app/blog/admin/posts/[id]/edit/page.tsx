@@ -105,7 +105,7 @@ export default function EditPostPage({ params }: Props) {
 
       const { error } = await supabase
         .from('blog_posts')
-        .update(formData)
+        .update(formData as never)
         .eq('id', id)
 
       if (error) throw error
