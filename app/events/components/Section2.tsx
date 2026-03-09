@@ -55,7 +55,7 @@ export default function Section2() {
             WHAT WE OFFER
           </h2>
           <p className="md:hidden text-gray-500 text-sm mt-2">
-            Choose from our carefully curated selection
+            Choose from our curated selection
           </p>
         </div>
 
