@@ -2,14 +2,15 @@
 
 import { X, Calendar, Users, MapPin, Mail, Phone, ArrowRight, ArrowLeft } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface LeadProps {
   open: boolean;
   onClose: () => void;
+  initialDate?: string;
 }
 
-export default function Lead({ open, onClose }: LeadProps) {
+export default function Lead({ open, onClose, initialDate }: LeadProps) {
   if (!open) return null;
 
   const [step, setStep] = useState(1);
@@ -28,6 +29,16 @@ export default function Lead({ open, onClose }: LeadProps) {
     guests: "",
     message: ""
   });
+
+  // Pre-fill message with the date from footer
+  useEffect(() => {
+    if (initialDate) {
+      setFormData(prev => ({
+        ...prev,
+        message: `Event Date: ${initialDate}`
+      }));
+    }
+  }, [initialDate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,6 +186,13 @@ export default function Lead({ open, onClose }: LeadProps) {
             Tell us about your event and our specialists will help craft the perfect menu. We will respond to you in 24 hours.
           </p>
 
+          {/* Show submitted date on mobile */}
+          {initialDate && (
+            <p className="text-sm md:text-base text-white/80 text-center md:text-left mt-2 md:hidden">
+              Event Date: <span className="font-medium text-white">{initialDate}</span>
+            </p>
+          )}
+
           {/* Mobile Progress Steps */}
           <div className="md:hidden mt-1">
             <div className="flex justify-between items-center">
@@ -223,6 +241,16 @@ export default function Lead({ open, onClose }: LeadProps) {
               </div>
             )}
             
+            {/* Show submitted date on desktop */}
+            {initialDate && (
+              <div className="hidden md:flex items-center gap-2 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                <Calendar size={16} className="text-[#F26522]" />
+                <span className="text-sm text-gray-700">
+                  Event Date: <span className="font-medium text-[#F26522]">{initialDate}</span>
+                </span>
+              </div>
+            )}
+
             {/* DESKTOP VIEW */}
             <div className="hidden md:block space-y-4">
               {/* Name */}

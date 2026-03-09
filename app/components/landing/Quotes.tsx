@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Quotes() {
   const [expandedSection, setExpandedSection] = useState<number | null>(null);
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   
   // Carousel images array
   const carouselImages = [
@@ -62,6 +64,26 @@ export default function Quotes() {
     return () => clearInterval(interval);
   }, [carouselImages.length]);
 
+  // Intersection Observer for section transitions
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   const mobileSections = [
     {
       id: 0,
@@ -85,11 +107,18 @@ export default function Quotes() {
   };
 
   return (
-    <section className="w-full bg-white py-12 md:py-16 lg:py-20">
+    <section 
+      ref={sectionRef}
+      className={`w-full bg-white py-12 md:py-16 lg:py-20 transition-all duration-1000 ${
+        isInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+      }`}
+    >
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-2 gap-6 md:gap-12 lg:gap-16 items-stretch">
         
         {/* Left Image Carousel */}
-        <div className="relative w-full h-[260px] sm:h-[340px] md:h-auto md:aspect-[3/3.2] rounded-md overflow-hidden">
+        <div className={`relative w-full h-[260px] sm:h-[340px] md:h-auto md:aspect-[3/3.2] rounded-md overflow-hidden transition-all duration-700 delay-100 ${
+          isInView ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'
+        }`}>
           {/* Carousel Images */}
           {carouselImages.map((src, i) => (
             <Image
@@ -159,45 +188,59 @@ export default function Quotes() {
           
           {/* Desktop Version (unchanged) */}
           <div className="hidden md:block text-center">
-            <h2 className="font-brisa italic text-orange-500 font-medium mb-3
-              text-[28px] sm:text-[36px] md:text-[50px] lg:text-[70px] xl:text-[80px]">
+            <h2 className={`font-brisa italic text-orange-500 font-medium mb-3
+              text-[28px] sm:text-[36px] md:text-[50px] lg:text-[70px] xl:text-[80px] transition-all duration-700 delay-200 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               Classic Since 1988
             </h2>
 
-            <p className="font-jost text-black leading-relaxed mb-3
-              text-[14px] sm:text-[15px] md:text-[18px] lg:text-[22px]">
+            <p className={`font-jost text-black leading-relaxed mb-3
+              text-[14px] sm:text-[15px] md:text-[18px] lg:text-[22px] transition-all duration-700 delay-300 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               At Cravings, we believe food should make you feel at home. For over
               37 years, we've been serving crave-worthy comfort food made with
               care—recipes that people recognize, love, and always come back for.
             </p>
 
-            <p className="font-jost text-black leading-relaxed mb-3
-              text-[14px] sm:text-[15px] md:text-[18px] lg:text-[22px]">
+            <p className={`font-jost text-black leading-relaxed mb-3
+              text-[14px] sm:text-[15px] md:text-[18px] lg:text-[22px] transition-all duration-700 delay-400 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               Our signature dishes aren't just familiar—they're feel-good
               favorites that bring people together and make any gathering
               instantly warmer and more memorable.
             </p>
 
-            <p className="font-jost text-black font-semibold italic mb-2
-              text-[16px] sm:text-[18px] md:text-[22px] lg:text-[26px]">
+            <p className={`font-jost text-black font-semibold italic mb-2
+              text-[16px] sm:text-[18px] md:text-[22px] lg:text-[26px] transition-all duration-700 delay-500 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               Made with Love
             </p>
 
-            <p className="font-jost text-black leading-relaxed mb-3
-              text-[14px] sm:text-[15px] md:text-[18px] lg:text-[22px]">
+            <p className={`font-jost text-black leading-relaxed mb-3
+              text-[14px] sm:text-[15px] md:text-[18px] lg:text-[22px] transition-all duration-700 delay-600 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               Cravings was founded by Annie Guerrero, whose passion for cooking
               with love shaped everything we do. From day one, she believed in
               thoughtful cooking, respect for ingredients, and applying zero-waste
               concepts long before it became a trend.
             </p>
 
-            <p className="font-jost text-black font-semibold italic mb-2
-              text-[16px] sm:text-[18px] md:text-[22px] lg:text-[26px]">
+            <p className={`font-jost text-black font-semibold italic mb-2
+              text-[16px] sm:text-[18px] md:text-[22px] lg:text-[26px] transition-all duration-700 delay-700 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               Powered by CCA Manila
             </p>
 
-            <p className="font-jost text-black leading-relaxed mb-3
-              text-[14px] sm:text-[15px] md:text-[18px] lg:text-[22px]">
+            <p className={`font-jost text-black leading-relaxed mb-3
+              text-[14px] sm:text-[15px] md:text-[18px] lg:text-[22px] transition-all duration-700 delay-800 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               Today, we continue that legacy—powered by the culinary excellence
               and standards of CCA Manila—combining heart, heritage, and
               professional expertise in every dish we serve.
@@ -206,8 +249,14 @@ export default function Quotes() {
 
           {/* Mobile Version - Vertical Accordion */}
           <div className="md:hidden flex flex-col space-y-3">
-            {mobileSections.map((section) => (
-              <div key={section.id} className="border border-gray-200 rounded-lg overflow-hidden">
+            {mobileSections.map((section, i) => (
+              <div 
+                key={section.id} 
+                className={`border border-gray-200 rounded-lg overflow-hidden transition-all duration-700 ${
+                  isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}
+                style={{ transitionDelay: isInView ? `${200 + i * 100}ms` : '0ms' }}
+              >
                 <button
                   onClick={() => toggleSection(section.id)}
                   className="w-full px-4 py-3 text-left bg-white hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center"
@@ -245,8 +294,10 @@ export default function Quotes() {
           </div>
 
           {/* Bottom tagline - visible on both mobile and desktop */}
-          <p className="font-jost text-black font-semibold text-center
-            text-[16px] sm:text-[18px] md:text-[22px] lg:text-[26px] mt-6 md:mt-0">
+          <p className={`font-jost text-black font-semibold text-center
+            text-[16px] sm:text-[18px] md:text-[22px] lg:text-[26px] mt-6 md:mt-0 transition-all duration-700 delay-900 ${
+            isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+          }`}>
             Good food. Real comfort. Made with love.
           </p>
 

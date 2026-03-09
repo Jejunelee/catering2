@@ -2,10 +2,39 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect, useRef } from "react";
 
 export default function Section() {
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Intersection Observer for section transitions
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section className="relative w-full py-8 md:py-6 overflow-x-hidden min-h-[60vh] md:min-h-0 flex items-center">
+    <section 
+      ref={sectionRef}
+      className={`relative w-full py-8 md:py-6 overflow-x-hidden min-h-[60vh] md:min-h-0 flex items-center transition-all duration-1000 ${
+        isInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+      }`}
+    >
       
       {/* Background Image with overlay for better text contrast */}
       <div className="absolute inset-0">
@@ -23,15 +52,20 @@ export default function Section() {
       <div className="font-jost relative z-10 max-w-[1200px] mx-auto px-3 sm:px-6 md:px-8 py-4 md:py-4 w-full">
         
         {/* Mobile Section Title - visible only on mobile */}
-        <h2 className="md:hidden text-white text-2xl font-medium mb-4 text-center drop-shadow-lg">
+        <h2 className={`md:hidden text-white text-2xl font-medium mb-4 text-center drop-shadow-lg transition-all duration-700 delay-100 ${
+          isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+        }`}>
           Our Services
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           
-          {/* Card 1 - Mobile: rectangle, Desktop: 30% smaller square */}
+          {/* Card 1 */}
           <Link href="/events" className="w-full block group">
-            <div className="relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95">
+            <div className={`relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
+            }`}
+            style={{ transitionDelay: isInView ? '200ms' : '0ms' }}>
               
               {/* Orange accent line */}
               <div className="w-12 md:w-8 h-1 md:h-0.5 bg-[#E25D1F] rounded-full mb-3 md:mb-2.5 transition-all duration-300 group-hover:w-16 md:group-hover:w-12"></div>
@@ -62,12 +96,15 @@ export default function Section() {
 
           {/* Card 2 */}
           <Link href="/foodtrays" className="w-full block group">
-            <div className="relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95">
+            <div className={`relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
+            }`}
+            style={{ transitionDelay: isInView ? '400ms' : '0ms' }}>
               
               <div className="w-12 md:w-8 h-1 md:h-0.5 bg-[#E25D1F] rounded-full mb-3 md:mb-2.5 transition-all duration-300 group-hover:w-16 md:group-hover:w-12"></div>
               
               <h3 className="text-[#E25D1F] font-bold text-xl md:text-[28px] leading-tight px-1 transition-all duration-300 group-hover:scale-105">
-                EVENT <br className="hidden md:block" /> CATERING
+                DELIVERED <br className="hidden md:block" /> CATERING
               </h3>
               
               <p className="md:hidden text-neutral-700 text-lg mt-2 px-2">
@@ -89,7 +126,10 @@ export default function Section() {
 
           {/* Card 3 */}
           <Link href="/venues" className="w-full block group">
-            <div className="relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95">
+            <div className={`relative bg-[#ebd7c7]/85 backdrop-blur-xs rounded-2xl md:rounded-[28px] p-5 md:p-5 text-center shadow-xl flex flex-col justify-center items-center transition-all duration-300 ease-out cursor-pointer md:aspect-square border border-white/20 min-h-[200px] md:min-h-0 group-hover:scale-105 group-hover:shadow-2xl group-hover:z-10 group-hover:bg-[#ebd7c7]/95 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
+            }`}
+            style={{ transitionDelay: isInView ? '600ms' : '0ms' }}>
               
               <div className="w-12 md:w-8 h-1 md:h-0.5 bg-[#E25D1F] rounded-full mb-3 md:mb-2.5 transition-all duration-300 group-hover:w-16 md:group-hover:w-12"></div>
               

@@ -1,11 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import { ChevronRight, UtensilsCrossed, PackageOpen } from "lucide-react";
 
 export default function Section1() {
-  const sections = [
+  // Define interface for section items
+  interface SectionItem {
+    bgColor: string;
+    title: string;
+    description: string;
+    image: string;
+    alt: string;
+    button: boolean;
+    icon: React.ReactNode;
+    pdfPath: string;
+    fileName: string;
+    textColor: string;
+  }
+
+  const sections: SectionItem[] = [
     {
       bgColor: "bg-[#FF8400]",
       title: "Party Trays",
@@ -14,7 +27,8 @@ export default function Section1() {
       alt: "Party Trays",
       button: true,
       icon: <UtensilsCrossed size={24} />,
-      modalAction: () => console.log("Party Trays button clicked"),
+      pdfPath: "/files/Sample1.pdf",
+      fileName: "Party-Trays-Menu.pdf",
       textColor: "text-white"
     },
     {
@@ -25,10 +39,22 @@ export default function Section1() {
       alt: "Packed Meals",
       button: true,
       icon: <PackageOpen size={24} />,
-      modalAction: () => console.log("Packed Meals button clicked"),
+      pdfPath: "/files/Sample1.pdf",
+      fileName: "Packed-Meals-Menu.pdf",
       textColor: "text-white"
     }
   ];
+
+  // Function to handle PDF download with proper typing
+  const downloadPDF = (pdfPath: string, fileName: string): void => {
+    // Create an anchor element
+    const link = document.createElement('a');
+    link.href = pdfPath;
+    link.download = fileName || 'menu.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <>
@@ -43,7 +69,7 @@ export default function Section1() {
         <div className="max-w-[1200px] mx-auto">
           {/* Mobile Layout (stacked) - visible on mobile only */}
           <div className="md:hidden flex flex-col">
-            {sections.map((section, index) => (
+            {sections.map((section: SectionItem, index: number) => (
               <div key={index} className="flex flex-col">
                 {/* Image */}
                 <div className="relative h-[220px] w-full">
@@ -70,7 +96,7 @@ export default function Section1() {
                   </p>
                   {section.button && (
                     <button
-                      onClick={section.modalAction}
+                      onClick={() => downloadPDF(section.pdfPath, section.fileName)}
                       className="font-jost border-2 border-white px-6 py-2 text-lg tracking-wider 
                       hover:bg-white hover:text-black transition-colors duration-300 
                       flex items-center gap-2 shadow-lg"
@@ -106,7 +132,7 @@ export default function Section1() {
               </p>
               {sections[0].button && (
                 <button
-                  onClick={sections[0].modalAction}
+                  onClick={() => downloadPDF(sections[0].pdfPath, sections[0].fileName)}
                   className="font-jost border-3 border-white px-5 py-1 text-[28px] tracking-wider hover:bg-white hover:text-black transition-colors duration-300"
                 >
                   DOWNLOAD MENU
@@ -125,7 +151,7 @@ export default function Section1() {
               </p>
               {sections[1].button && (
                 <button
-                  onClick={sections[1].modalAction}
+                  onClick={() => downloadPDF(sections[1].pdfPath, sections[1].fileName)}
                   className="font-jost border-3 border-white px-5 py-1 text-[28px] tracking-wider hover:bg-white hover:text-black transition-colors duration-300"
                 >
                   DOWNLOAD MENU
@@ -147,7 +173,7 @@ export default function Section1() {
         {/* Bottom CTA */}
         <div className="max-w-[1200px] mx-auto mt-6 md:mt-10 px-4 md:px-0">
           <button 
-            onClick={() => console.log("Full menu button clicked")}
+            onClick={() => downloadPDF("/files/Sample1.pdf", "Full-Menu.pdf")}
             className="font-jost text-xl md:text-[36px] underline decoration-2 md:decoration-3 underline-offset-4 w-full bg-black text-white py-4 md:py-5 
             hover:bg-gray-900 transition-colors duration-300 md:rounded-none shadow-lg md:shadow-none
             flex items-center justify-center gap-2"

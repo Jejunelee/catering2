@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Lead from "@/app/events/modals/Lead";
 
@@ -11,6 +11,8 @@ export default function Hero() {
   const [leadOpen, setLeadOpen] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const prev = () => {
     setIndex((i) => (i === 0 ? images.length - 1 : i - 1));
@@ -51,8 +53,33 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, [images.length]);
 
+  // Intersection Observer for section transitions
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section className="relative w-full h-[600px] sm:h-[610px] md:h-[670px] lg:h-[730px] bg-white overflow-hidden">
+    <section 
+      ref={sectionRef}
+      className={`relative w-full h-[600px] sm:h-[610px] md:h-[670px] lg:h-[860px] bg-white overflow-hidden transition-all duration-1000 ${
+        isInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+      }`}
+    >
       
       {/* ---------- MOBILE BACKGROUND IMAGE WITH SWIPE ---------- */}
       <div 
@@ -119,22 +146,33 @@ export default function Hero() {
           <div className="max-w-[700px] mx-auto md:mx-0">
             
             {/* Mobile-optimized typography */}
-            <h1 className="font-jost font-medium leading-tight text-gray-900 text-xl sm:text-2xl md:text-[clamp(20px,3vw,40px)]">
+            <h1 className={`font-jost font-medium leading-tight text-gray-900 text-xl sm:text-2xl md:text-[clamp(20px,3vw,40px)] transition-all duration-700 delay-100 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               Elevate your events with
             </h1>
 
-            <h2 className="text-orange-500 font-brisa italic leading-[0.95] text-6xl sm:text-6xl md:text-[clamp(35px,10vw,7rem)] mt-1">
-              Cravings Catering
+            <h2 className="text-orange-500 font-brisa italic leading-[0.95] text-6xl sm:text-6xl md:text-[clamp(35px,10vw,7rem)] mt-1 relative">
+              <span className={`inline-block transition-all duration-700 delay-200 ${
+                isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+              }`}>
+                Cravings Catering
+              </span>
+              {/* Path drawing animation overlay */}
             </h2>
 
-            <p className="mt-3 font-jost leading-relaxed text-neutral-800 text-base sm:text-lg md:text-[clamp(15px,2vw,20px)] max-w-[38ch] sm:max-w-[42ch] md:max-w-[520px] mx-auto md:mx-0">
+            <p className={`mt-3 font-jost leading-relaxed text-neutral-800 text-base sm:text-lg md:text-[clamp(15px,2vw,20px)] max-w-[38ch] sm:max-w-[42ch] md:max-w-[520px] mx-auto md:mx-0 transition-all duration-700 delay-300 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               With over 30 years of experience, we create memorable events
               through crave-worthy cuisine and thoughtful, personalized
               service.
             </p>
 
             {/* Mobile CTA with better touch target */}
-            <div className="mt-8 md:mt-12 flex justify-center md:justify-start">
+            <div className={`mt-8 md:mt-12 flex justify-center md:justify-start transition-all duration-700 delay-400 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               <button
                 onClick={() => setLeadOpen(true)}
                 className="font-jost bg-[#F15B19] hover:bg-orange-600 text-white font-medium px-8 py-4 md:px-8 md:py-4 text-base md:text-[clamp(14px,1.5vw,20px)] transition shadow-lg active:scale-95 rounded-lg md:rounded-none w-full max-w-[280px] mx-auto md:w-auto md:mx-0"
@@ -144,7 +182,9 @@ export default function Hero() {
             </div>
 
             {/* Mobile trust indicator */}
-            <p className="mt-4 text-xs text-gray-500 md:hidden">
+            <p className={`mt-4 text-xs text-gray-500 md:hidden transition-all duration-700 delay-500 ${
+              isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+            }`}>
               Free consultation • No obligation
             </p>
           </div>
@@ -152,7 +192,9 @@ export default function Hero() {
       </div>
 
       {/* ---------- CONTROLS ---------- */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 md:left-[20%] md:translate-x-0 z-30 flex items-center justify-between w-[100px] sm:w-[110px] px-4 py-2 bg-[#DDC8B7] shadow-md md:rounded-none">
+      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 md:left-[20%] md:translate-x-0 z-30 flex items-center justify-between w-[100px] sm:w-[110px] px-4 py-2 bg-[#DDC8B7] shadow-md md:rounded-none transition-all duration-700 delay-600 ${
+        isInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+      }`}>
         <button 
           onClick={prev} 
           className="hover:text-[#F15B19] transition p-1 active:scale-90"

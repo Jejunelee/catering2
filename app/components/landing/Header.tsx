@@ -50,7 +50,7 @@ export default function Header() {
     { href: "/foodtrays", label: "Food Trays" },
     { href: "/gifts", label: "Gifts" },
     { href: "/venues", label: "Venues" },
-    { href: "/blog", label: "Blogs & Articles", disabled: true },
+    { href: "/blog", label: "Blogs & Articles" }, // Removed disabled: true
   ];
 
   return (
@@ -84,23 +84,14 @@ export default function Header() {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-10 text-[16px] lg:text-[19px] font-jost text-black">
               {navItems.map((item) => (
-                item.disabled ? (
-                  <span 
-                    key={item.href} 
-                    className="text-neutral-300 cursor-not-allowed relative group"
-                  >
-                    {item.label}
-                  </span>
-                ) : (
-                  <Link 
-                    key={item.href} 
-                    href={item.href} 
-                    className="hover:text-[#F15B19] transition-colors duration-200 relative group"
-                  >
-                    {item.label}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F15B19] transition-all duration-300 group-hover:w-full"></span>
-                  </Link>
-                )
+                <Link 
+                  key={item.href} 
+                  href={item.href} 
+                  className="hover:text-[#F15B19] transition-colors duration-200 relative group"
+                >
+                  {item.label}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#F15B19] transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               ))}
             </nav>
 
@@ -143,26 +134,16 @@ export default function Header() {
           
           {/* Navigation Links */}
           <div className="flex-1 px-6 py-4">
-            {navItems.map((item, index) => (
-              item.disabled ? (
-                <div
-                  key={item.href}
-                  className="flex items-center justify-between py-4 text-gray-400 font-jost text-xl border-b border-black/10 cursor-not-allowed"
-                >
-                  <span>{item.label}</span>
-                  <ChevronRight size={20} className="text-gray-300" />
-                </div>
-              ) : (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-between py-4 text-black font-jost text-xl border-b border-black/10 hover:text-[#F15B19] transition-colors group"
-                >
-                  <span>{item.label}</span>
-                  <ChevronRight size={20} className="text-gray-400 group-hover:text-[#F15B19] group-hover:translate-x-1 transition-all" />
-                </Link>
-              )
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between py-4 text-black font-jost text-xl border-b border-black/10 hover:text-[#F15B19] transition-colors group"
+              >
+                <span>{item.label}</span>
+                <ChevronRight size={20} className="text-gray-400 group-hover:text-[#F15B19] group-hover:translate-x-1 transition-all" />
+              </Link>
             ))}
             
             {/* Mobile Get a Quote Button */}

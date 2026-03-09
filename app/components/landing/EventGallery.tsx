@@ -1,12 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation"; // Add this import
+import { useRouter } from "next/navigation";
 
 export default function EventGallery() {
-  const router = useRouter(); // Add this hook
+  const router = useRouter();
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  
   const images = [
     "/landing/eventgallery/EventGallery1.png",
     "/landing/eventgallery/EventGallery2.jpg",
@@ -31,7 +34,6 @@ export default function EventGallery() {
     setIndex((i) => (i === images.length - 1 ? 0 : i + 1));
   };
 
-  // Add this handler function
   const handleViewGallery = () => {
     router.push('/events');
   };
@@ -61,7 +63,6 @@ export default function EventGallery() {
 
   // Auto carousel (optimized)
   useEffect(() => {
-    // Don't run auto-carousel on mobile
     if (typeof window !== 'undefined' && window.innerWidth < 768) return;
     
     const interval = setInterval(() => {
@@ -71,12 +72,39 @@ export default function EventGallery() {
     return () => clearInterval(interval);
   }, [images.length]);
 
+  // Intersection Observer for section transitions
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section className="w-full relative overflow-hidden">
+    <section 
+      ref={sectionRef}
+      className={`w-full relative overflow-hidden transition-all duration-1000 ${
+        isInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+      }`}
+    >
       {/* Desktop Layout - 30% smaller proportionately */}
       <div className="hidden md:flex w-full items-stretch">
         {/* Left Orange Panel - 30% smaller */}
-        <div className="bg-[#FF8400] flex flex-col justify-center px-14 py-20 text-white w-[469px] h-[613px]">
+        <div className={`bg-[#FF8400] flex flex-col justify-center px-14 py-20 text-white w-[469px] h-[613px] transition-all duration-700 delay-100 ${
+          isInView ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'
+        }`}>
           <h2 className="font-brisa text-[70px] leading-[1.15] font-light">
             Moments Worth
             <br />
@@ -84,7 +112,7 @@ export default function EventGallery() {
           </h2>
 
           <button 
-            onClick={handleViewGallery} // Add onClick handler
+            onClick={handleViewGallery}
             className="mt-7 border-2 border-white px-5 py-2.5 text-[21px] tracking-[2px] hover:bg-white hover:text-[#F5821F] transition-all duration-300 w-fit font-medium"
           >
             VIEW EVENT GALLERY
@@ -92,7 +120,9 @@ export default function EventGallery() {
         </div>
 
         {/* Right Image Carousel - 30% smaller */}
-        <div className="flex-1 p-6 bg-[#E6D7C7]">
+        <div className={`flex-1 p-6 bg-[#E6D7C7] transition-all duration-700 delay-200 ${
+          isInView ? 'translate-x-0 opacity-100' : 'translate-x-12 opacity-0'
+        }`}>
           <div className="relative w-full h-[560px]">
             {images.map((src, i) => (
               <Image
@@ -111,7 +141,9 @@ export default function EventGallery() {
         </div>
 
         {/* Desktop Chevron Controls - ORIGINAL DESIGN PRESERVED */}
-        <div className="px-4 py-2 absolute bottom-0 left-[469px] -translate-x-1/2 z-20 flex items-center justify-between w-[130px] bg-[#000000] shadow-md">
+        <div className={`px-4 py-2 absolute bottom-0 left-[469px] -translate-x-1/2 z-20 flex items-center justify-between w-[130px] bg-[#000000] shadow-md transition-all duration-700 delay-300 ${
+          isInView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
+        }`}>
           <button 
             onClick={prev} 
             className="hover:bg-[#F15B19] transition p-1 text-white"
@@ -132,7 +164,9 @@ export default function EventGallery() {
       {/* Mobile Layout - Enhanced with swipe */}
       <div className="md:hidden flex flex-col">
         {/* Mobile Orange Header - SINGLE LINE */}
-        <div className="bg-[#FF8400] px-6 py-2 text-white text-center">
+        <div className={`bg-[#FF8400] px-6 py-2 text-white text-center transition-all duration-700 delay-100 ${
+          isInView ? 'translate-y-0 opacity-100' : '-translate-y-12 opacity-0'
+        }`}>
           <h2 className="font-brisa text-4xl sm:text-4xl font-light whitespace-nowrap overflow-x-auto scrollbar-hide">
             Moments Worth Remembering
           </h2>
@@ -140,7 +174,9 @@ export default function EventGallery() {
 
         {/* Mobile Image Carousel with Swipe */}
         <div 
-          className="relative w-full h-[350px] bg-[#E6D7C7]"
+          className={`relative w-full h-[350px] bg-[#E6D7C7] transition-all duration-700 delay-200 ${
+            isInView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
+          }`}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
@@ -199,9 +235,11 @@ export default function EventGallery() {
         </div>
 
         {/* Mobile Button */}
-        <div className="bg-[#E6D7C7] px-6 py-6">
+        <div className={`bg-[#E6D7C7] px-6 py-6 transition-all duration-700 delay-300 ${
+          isInView ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
+        }`}>
           <button 
-            onClick={handleViewGallery} // Add onClick handler
+            onClick={handleViewGallery}
             className="w-full bg-[#FF8400] text-white py-4 px-6 text-lg tracking-wide hover:bg-[#F5821F] transition-all duration-300 active:scale-98 font-medium rounded-lg shadow-md"
           >
             VIEW EVENT GALLERY

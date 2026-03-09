@@ -2,8 +2,34 @@
 
 import Image from "next/image";
 import { Facebook, Instagram, Phone, Mail, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import Lead from "@/app/events/modals/Lead";
 
 export default function Footer() {
+  const [leadOpen, setLeadOpen] = useState(false);
+  const [eventDate, setEventDate] = useState("");
+  const [submittedDate, setSubmittedDate] = useState("");
+
+  const handleDateSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && eventDate.trim() !== "") {
+      setSubmittedDate(eventDate);
+      setLeadOpen(true);
+    }
+  };
+
+  const handleArrowClick = () => {
+    if (eventDate.trim() !== "") {
+      setSubmittedDate(eventDate);
+      setLeadOpen(true);
+    }
+  };
+
+  const handleClose = () => {
+    setLeadOpen(false);
+    // Optional: Clear the date after closing
+    // setEventDate("");
+  };
+
   return (
     <footer className="font-jost w-full bg-black text-white py-6 md:py-8">
       <div className="max-w-[1400px] mx-auto px-6 md:px-8 flex flex-col md:flex-row justify-between items-start gap-6 md:gap-0">
@@ -40,10 +66,33 @@ export default function Footer() {
               <input
                 type="text"
                 placeholder="Event Date here"
+                value={eventDate}
+                onChange={(e) => setEventDate(e.target.value)}
+                onKeyDown={handleDateSubmit}
                 className="bg-transparent outline-none text-gray-300 placeholder-gray-400 w-full py-0.5"
               />
-              <ArrowRight size={14} className="ml-1.5 text-white flex-shrink-0" />
+              <button 
+                onClick={handleArrowClick}
+                className="focus:outline-none"
+                aria-label="Submit date"
+              >
+                <ArrowRight 
+                  size={14} 
+                  className={`ml-1.5 flex-shrink-0 transition-colors ${
+                    eventDate.trim() !== "" 
+                      ? "text-[#FF8400] cursor-pointer hover:text-orange-400" 
+                      : "text-gray-500"
+                  }`} 
+                />
+              </button>
             </div>
+            
+            {/* Optional: Show preview of what will be sent */}
+            {eventDate.trim() !== "" && (
+              <p className="text-xs text-gray-400 mt-1">
+                Will open form with: &quot;{eventDate}&quot;
+              </p>
+            )}
           </div>
 
           {/* Contact Section */}
@@ -95,6 +144,12 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      <Lead 
+        open={leadOpen} 
+        onClose={handleClose}
+        initialDate={submittedDate} // Pass the typed date to Lead component
+      />
     </footer>
   );
 }
