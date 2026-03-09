@@ -106,7 +106,7 @@ export default function Menu({ open, onClose }: MenuProps) {
               className="hidden md:flex items-center justify-center gap-2 bg-white text-[#F5821F] px-6 py-3 rounded-lg font-medium hover:bg-white/90 transition-colors mt-6 w-fit"
             >
               <Download size={20} />
-              <span>Download Menu</span>
+              <span>Download Our Menu</span>
             </button>
 
             {/* Mobile Buttons */}
