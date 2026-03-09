@@ -11,9 +11,9 @@ export default function Quotes() {
   
   // Carousel images array
   const carouselImages = [
-    "/landing/quotes/Quotes-1.jpg",
-    "/landing/quotes/Quotes-2.jpg",
-    "/landing/quotes/Quotes-3.jpg",
+    "/landing/quotes/Quotes-1.webp",
+    "/landing/quotes/Quotes-2.webp",
+    "/landing/quotes/Quotes-3.webp",
   ];
 
   // Carousel state

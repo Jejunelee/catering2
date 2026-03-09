@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Header() {
   const images = [
-    "/foodtrays/header/Header1-1.png",
+    "/foodtrays/header/Header1-1.webp",
   ];
 
   const [index, setIndex] = useState(0);

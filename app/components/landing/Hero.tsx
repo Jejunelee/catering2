@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Lead from "@/app/events/modals/Lead";
 
 export default function Hero() {
-  const images = ["/landing/hero/Hero1.png", "/landing/hero/Hero2.jpg","/landing/hero/Hero3.jpg","/landing/hero/Hero4.jpg"];
+  const images = ["/landing/hero/Hero1.webp", "/landing/hero/Hero2.webp","/landing/hero/Hero3.webp","/landing/hero/Hero4.webp"];
   const [index, setIndex] = useState(0);
   const [leadOpen, setLeadOpen] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);

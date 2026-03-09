@@ -11,15 +11,15 @@ export default function EventGallery() {
   const sectionRef = useRef<HTMLElement>(null);
   
   const images = [
-    "/landing/eventgallery/EventGallery1.png",
-    "/landing/eventgallery/EventGallery2.jpg",
-    "/landing/eventgallery/EventGallery3.jpg",
-    "/landing/eventgallery/EventGallery4.jpg",
-    "/landing/eventgallery/EventGallery5.jpg",
-    "/landing/eventgallery/EventGallery6.jpg",
-    "/landing/eventgallery/EventGallery7.jpg",
-    "/landing/eventgallery/EventGallery8.jpg",
-    "/landing/eventgallery/EventGallery9.jpg",
+    "/landing/eventgallery/EventGallery1.webp",
+    "/landing/eventgallery/EventGallery2.webp",
+    "/landing/eventgallery/EventGallery3.webp",
+    "/landing/eventgallery/EventGallery4.webp",
+    "/landing/eventgallery/EventGallery5.webp",
+    "/landing/eventgallery/EventGallery6.webp",
+    "/landing/eventgallery/EventGallery7.webp",
+    "/landing/eventgallery/EventGallery8.webp",
+    "/landing/eventgallery/EventGallery9.webp",
   ];
 
   const [index, setIndex] = useState(0);

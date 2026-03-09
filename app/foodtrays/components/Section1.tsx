@@ -8,15 +8,15 @@ export default function Section1() {
   // Add carousel images array for each section
   const sectionImages = [
     [
-      "/foodtrays/sections/partytrays/1.png",
-      "/foodtrays/sections/partytrays/2.png",
-      "/foodtrays/sections/partytrays/3.png",
-      "/foodtrays/sections/partytrays/4.png",
+      "/foodtrays/sections/partytrays/1.webp",
+      "/foodtrays/sections/partytrays/2.webp",
+      "/foodtrays/sections/partytrays/3.webp",
+      "/foodtrays/sections/partytrays/4.webp",
     ],
     [
-      "/foodtrays/sections/packedmeals/1.png",
-      "/foodtrays/sections/packedmeals/2.png",
-      "/foodtrays/sections/packedmeals/3.png",
+      "/foodtrays/sections/packedmeals/1.webp",
+      "/foodtrays/sections/packedmeals/2.webp",
+      "/foodtrays/sections/packedmeals/3.webp",
     ]
   ];
 
@@ -55,7 +55,7 @@ export default function Section1() {
       bgColor: "bg-[#FF8400]",
       title: "Party Trays",
       description: "Our customizable party trays feature a delectable assortment of appetizers, main courses, and desserts, crafted with the finest ingredients and culinary expertise.",
-      image: "/foodtrays/sections/section1x1.png",
+      image: "/foodtrays/sections/section1x1.webp",
       alt: "Party Trays",
       button: true,
       icon: <UtensilsCrossed size={24} />,
@@ -67,7 +67,7 @@ export default function Section1() {
       bgColor: "bg-[#633300]",
       title: "Packed Meals",
       description: "Our packed meals offer a delicious and hassle-free dining experience. Whether you're on-the-go or want a convenient meal at home, our packed meals are the perfect solution.",
-      image: "/foodtrays/sections/section1x2.png",
+      image: "/foodtrays/sections/section1x2.webp",
       alt: "Packed Meals",
       button: true,
       icon: <PackageOpen size={24} />,

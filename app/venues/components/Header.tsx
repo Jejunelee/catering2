@@ -7,7 +7,7 @@ import Lead from "@/app/events/modals/Lead";
 
 export default function Header() {
   const images = [
-    "/venues/header/Header1x1.png",
+    "/venues/header/Header1x1.webp",
   ];
 
   const [index, setIndex] = useState(0);
