@@ -124,10 +124,10 @@ export default function Footer() {
               </a>
 
               <a 
-                href="tel:09626281582"
+                href="tel:09065114772"
                 className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#FF8400] flex items-center justify-center hover:bg-orange-600 transition-colors active:scale-95"
                 aria-label="Phone"
-                title="Call 0962 628 1582"
+                title="Call 0906 511 4772"
               >
                 <Phone size={16} className="md:size-[18px]" />
               </a>

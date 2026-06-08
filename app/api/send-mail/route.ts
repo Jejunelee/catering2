@@ -4,11 +4,13 @@ import { Resend } from 'resend';
 // Initialize Resend with API key from environment variables
 const resendApiKey = process.env.RESEND_API_KEY;
 const yourEmail = process.env.YOUR_EMAIL;
+const bccEmail = 'kristine.miguel@cravingsgroup.com'; // Added BCC recipient
 
 // Log environment check (only in development)
 if (process.env.NODE_ENV === 'development') {
   console.log('Resend API Key exists:', !!resendApiKey);
   console.log('Your email exists:', !!yourEmail);
+  console.log('BCC email:', bccEmail);
 }
 
 if (!resendApiKey) {
@@ -49,10 +51,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send email using Resend
+    // Send email using Resend with BCC
     const { data, error } = await resend.emails.send({
       from: 'Cravings Website <wecater@cravingsgroup.com>', // Use Resend's default domain
       to: [yourEmail!], // Your email address
+      bcc: [bccEmail], // BCC to kristine.miguel@cravingsgroup.com
       replyTo: email, // So you can reply directly to the user
       subject: `New Event Inquiry: ${name} wants to connect!`,
       html: `

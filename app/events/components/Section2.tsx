@@ -30,10 +30,10 @@ export default function Section2() {
       icon: <Sparkles size={20} />,
     },
     {
-      title: "PREMIUM SELECTION",
+      title: "BESPOKE SELECTION",
       image: "/events/sections/Section2x3.png",
       action: () => setOpenPremium(true),
-      description: "Elevated offerings for the most discerning palates",
+      description: "CCA crafted menus for cravings",
       icon: <Sparkles size={20} />,
     },
     {

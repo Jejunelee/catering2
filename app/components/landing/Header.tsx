@@ -50,7 +50,7 @@ export default function Header() {
     { href: "/foodtrays", label: "Food Trays" },
     { href: "/gifts", label: "Gifts" },
     { href: "/venues", label: "Venues" },
-    { href: "/blog", label: "Blogs & Articles" }, // Removed disabled: true
+    { href: "/gallery", label: "Gallery & Testimonials" }, // Changed from "/blog" and "Blogs & Articles"
   ];
 
   return (
