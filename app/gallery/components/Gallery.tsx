@@ -8,7 +8,6 @@ interface GalleryImage {
   src: string;
   alt: string;
   category?: string;
-  span?: "single" | "double" | "wide" | "tall";
 }
 
 interface GalleryProps {
@@ -17,101 +16,174 @@ interface GalleryProps {
   subtitle?: string;
 }
 
-const defaultImages: GalleryImage[] = [
-  {
-    src: "/events/gallery/gallery1.jpg",
-    alt: "Party Tray Display",
-    category: "Party Trays",
-    span: "wide",
+// Exact folder names as you provided
+const folderConfig = [
+  { 
+    folder: "cap", 
+    category: "Capital One Event • Kalubkob Elementary School • Oct 9, 2025 • 100th Water Tank Donation",
+    displayName: "Capital One Event"
   },
-  {
-    src: "/events/gallery/gallery2.jpg",
-    alt: "Gourmet Packed Meals",
-    category: "Packed Meals",
-    span: "tall",
+  { 
+    folder: "wtc", 
+    category: "WTC E3 • September 24-25, 2025",
+    displayName: "WTC E3"
   },
-  {
-    src: "/events/gallery/gallery3.jpg",
-    alt: "Dessert Selection",
-    category: "Desserts",
-    span: "single",
+  { 
+    folder: "pma", 
+    category: "Phil Marketing Association • BYD Aseana Manila • August 8, 2025",
+    displayName: "Phil Marketing Association"
   },
-  {
-    src: "/events/gallery/gallery4.jpg",
-    alt: "Corporate Catering Setup",
-    category: "Corporate",
-    span: "double",
+  { 
+    folder: "travelclub", 
+    category: "Travel Club • Rockwell Powerplant • September 14, 2025",
+    displayName: "Travel Club"
   },
-  {
-    src: "/events/gallery/gallery5.jpg",
-    alt: "Wedding Spread",
-    category: "Weddings",
-    span: "single",
+  { 
+    folder: "paypal", 
+    category: "PayPal Launch Event",
+    displayName: "PayPal Launch"
   },
-  {
-    src: "/events/gallery/gallery6.jpg",
-    alt: "Breakfast Buffet",
-    category: "Breakfast",
-    span: "wide",
+  { 
+    folder: "rt", 
+    category: "RT's 60th Birthday",
+    displayName: "RT's 60th Birthday"
   },
-  {
-    src: "/events/gallery/gallery7.jpg",
-    alt: "Chef Plating",
-    category: "Behind the Scenes",
-    span: "tall",
+  { 
+    folder: "pdi", 
+    category: "PDI's Best Desserts",
+    displayName: "PDI's Best Desserts"
   },
-  {
-    src: "/events/gallery/gallery8.jpg",
-    alt: "Custom Cake Design",
-    category: "Desserts",
-    span: "single",
-  },
-  {
-    src: "/events/gallery/gallery9.jpg",
-    alt: "Outdoor Catering",
-    category: "Events",
-    span: "double",
-  },
+  { 
+    folder: "cat24", 
+    category: "Catering Photos 2024",
+    displayName: "Catering 2024"
+  }
 ];
 
+// Specify exact number of images per folder
+const imagesPerFolder: Record<string, number> = {
+  "cap": 6,
+  "wtc": 4,
+  "pma": 3,
+  "travelclub": 4,
+  "paypal": 63,
+  "rt": 11,
+  "pdi": 4,
+  "cat24": 7
+};
+
+// Maximum number of images to show per event in the collage
+const MAX_COLLAGE_IMAGES_PER_EVENT = 3;
+
+// Generate all images
+const generateAllImages = (): GalleryImage[] => {
+  const allImages: GalleryImage[] = [];
+  
+  folderConfig.forEach((config) => {
+    const imageCount = imagesPerFolder[config.folder] || 0;
+    
+    for (let i = 1; i <= imageCount; i++) {
+      allImages.push({
+        src: `/gallery/${config.folder}/P${i}.jpg`,
+        alt: `${config.category} - Photo ${i}`,
+        category: config.displayName,
+      });
+    }
+  });
+  
+  return allImages;
+};
+
+// Generate collage images (max 3 per category)
+const generateCollageImages = (allImages: GalleryImage[]): GalleryImage[] => {
+  const collageImages: GalleryImage[] = [];
+  const categoryCounts: Record<string, number> = {};
+  
+  for (const img of allImages) {
+    const cat = img.category || '';
+    const currentCount = categoryCounts[cat] || 0;
+    
+    if (currentCount < MAX_COLLAGE_IMAGES_PER_EVENT) {
+      collageImages.push(img);
+      categoryCounts[cat] = currentCount + 1;
+    }
+  }
+  
+  return collageImages;
+};
+
+const allImagesGenerated = generateAllImages();
+const collageImages = generateCollageImages(allImagesGenerated);
+
+// Split images into columns for masonry layout
+const getMasonryColumns = (images: GalleryImage[], columns: number = 3): GalleryImage[][] => {
+  const columnArrays: GalleryImage[][] = Array(columns).fill(null).map(() => []);
+  
+  images.forEach((image, index) => {
+    const columnIndex = index % columns;
+    columnArrays[columnIndex].push(image);
+  });
+  
+  return columnArrays;
+};
+
 export default function Gallery({ 
-  images = defaultImages, 
-  title = "Visual Feast", 
-  subtitle = "A glimpse into our culinary artistry" 
+  images = collageImages, 
+  title = "Event Gallery", 
+  subtitle = "Capturing moments that matter" 
 }: GalleryProps) {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [filter, setFilter] = useState<string>("All");
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoveredImageId, setHoveredImageId] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const [columns, setColumns] = useState(3);
 
-  // Get unique categories
-  const categories = ["All", ...new Set(images.map(img => img.category).filter(Boolean))] as string[];
+  // Handle responsive columns
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) setColumns(1);
+      else if (window.innerWidth < 768) setColumns(2);
+      else if (window.innerWidth < 1024) setColumns(2);
+      else setColumns(3);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  // Filter images based on selected category
-  const filteredImages = filter === "All" 
-    ? images 
-    : images.filter(img => img.category === filter);
+  // Get all images for a category (for lightbox)
+  const getAllImagesForCategory = (category: string): GalleryImage[] => {
+    return allImagesGenerated.filter(img => img.category === category);
+  };
 
-  const openLightbox = (image: GalleryImage, index: number) => {
+  const openLightbox = (image: GalleryImage) => {
+    const categoryImages = getAllImagesForCategory(image.category || '');
+    const actualIndex = categoryImages.findIndex(img => img.src === image.src);
     setSelectedImage(image);
-    setCurrentIndex(index);
+    setCurrentIndex(actualIndex >= 0 ? actualIndex : 0);
   };
 
   const closeLightbox = () => {
     setSelectedImage(null);
   };
 
+  const getCurrentCategoryImages = (): GalleryImage[] => {
+    if (!selectedImage) return [];
+    return getAllImagesForCategory(selectedImage.category || '');
+  };
+
   const navigatePrev = () => {
-    const newIndex = currentIndex === 0 ? filteredImages.length - 1 : currentIndex - 1;
+    const categoryImages = getCurrentCategoryImages();
+    const newIndex = currentIndex === 0 ? categoryImages.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
-    setSelectedImage(filteredImages[newIndex]);
+    setSelectedImage(categoryImages[newIndex]);
   };
 
   const navigateNext = () => {
-    const newIndex = currentIndex === filteredImages.length - 1 ? 0 : currentIndex + 1;
+    const categoryImages = getCurrentCategoryImages();
+    const newIndex = currentIndex === categoryImages.length - 1 ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
-    setSelectedImage(filteredImages[newIndex]);
+    setSelectedImage(categoryImages[newIndex]);
   };
 
   useEffect(() => {
@@ -125,29 +197,26 @@ export default function Gallery({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedImage, currentIndex]);
 
-  // Get grid class based on span
-  const getGridClass = (span: string = "single") => {
-    switch(span) {
-      case "double":
-        return "md:col-span-2 md:row-span-2";
-      case "wide":
-        return "md:col-span-2";
-      case "tall":
-        return "md:row-span-2";
-      default:
-        return "";
-    }
+  const getCurrentDisplayIndex = () => {
+    if (!selectedImage) return { current: 1, total: 1 };
+    const categoryImages = getAllImagesForCategory(selectedImage.category || '');
+    const index = categoryImages.findIndex(img => img.src === selectedImage.src);
+    return { current: index + 1, total: categoryImages.length };
   };
+
+  // Generate unique ID for image
+  const getImageId = (image: GalleryImage, colIndex: number, rowIndex: number) => {
+    return `${image.category}-${image.src}-${colIndex}-${rowIndex}`;
+  };
+
+  // Get masonry columns for images
+  const masonryColumns = getMasonryColumns(images, columns);
 
   return (
     <section ref={sectionRef} className="w-full py-12 md:py-20 bg-gradient-to-b from-[#FFFFFF] to-[#FFF9F0]">
       <div className="max-w-[1400px] mx-auto px-4">
-        {/* Creative Header with accent */}
+        {/* Header - No badge */}
         <div className="text-center mb-12 md:mb-16 relative">
-          <div className="inline-flex items-center gap-2 bg-[#FF8400]/10 px-4 py-1 rounded-full mb-4">
-            <Sparkles size={16} className="text-[#FF8400]" />
-            <span className="font-jost text-xs tracking-wider text-[#FF8400] uppercase">Moments Captured</span>
-          </div>
           <h2 className="font-brisa italic text-5xl md:text-7xl font-light text-gray-800 mb-3">
             {title}
           </h2>
@@ -159,113 +228,96 @@ export default function Gallery({
           </div>
         </div>
 
-        {/* Category Filter - Creative Pill Design */}
-        <div className="flex justify-center mb-12 overflow-x-auto pb-4 scrollbar-hide">
-          <div className="flex gap-2 md:gap-3 bg-white/50 backdrop-blur-sm p-1 rounded-full shadow-sm">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setFilter(category)}
-                className={`font-jost px-5 md:px-7 py-2 md:py-2.5 text-xs md:text-sm tracking-wider rounded-full transition-all duration-500 whitespace-nowrap
-                  ${filter === category 
-                    ? "bg-[#FF8400] text-white shadow-lg shadow-[#FF8400]/30 scale-105" 
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                  }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Creative Masonry/Collage Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-[minmax(280px,auto)] gap-4 md:gap-6">
-          {filteredImages.map((image, index) => (
-            <div
-              key={index}
-              onClick={() => openLightbox(image, index)}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className={`relative group overflow-hidden cursor-pointer rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 ${getGridClass(image.span)}`}
-              style={{
-                transform: hoveredIndex === index ? 'scale-[1.02]' : 'scale(1)',
-                transition: 'transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1)'
-              }}
-            >
-              {/* Image Container */}
-              <div className="relative w-full h-full min-h-[280px]">
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  className="object-cover transition-all duration-700 group-hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                />
+        {/* Masonry Collage Grid - Equal spacing, no large gaps */}
+        <div className="flex gap-4 md:gap-6">
+          {masonryColumns.map((column, colIndex) => (
+            <div key={colIndex} className="flex-1 flex flex-col gap-4 md:gap-6">
+              {column.map((image, rowIndex) => {
+                const imageId = getImageId(image, colIndex, rowIndex);
+                const totalInCategory = allImagesGenerated.filter(img => img.category === image.category).length;
+                const hasMoreImages = totalInCategory > MAX_COLLAGE_IMAGES_PER_EVENT;
                 
-                {/* Gradient Overlay - Appears on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500
-                  ${hoveredIndex === index ? 'opacity-100' : 'opacity-0 md:opacity-0'}`}
-                />
-                
-                {/* Content Overlay - Slides up on hover */}
-                <div className={`absolute bottom-0 left-0 right-0 p-4 md:p-6 transform transition-all duration-500
-                  ${hoveredIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-                  <div className="bg-white/10 backdrop-blur-md rounded-lg p-3">
-                    <p className="font-jost text-white text-sm md:text-base font-medium">
-                      {image.alt}
-                    </p>
-                    {image.category && (
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="text-xs text-[#FF8400] font-jost tracking-wide uppercase">
-                          {image.category}
-                        </span>
-                        <div className="w-4 h-px bg-white/50"></div>
-                        <span className="text-xs text-white/70">View Details →</span>
+                return (
+                  <div
+                    key={imageId}
+                    onClick={() => openLightbox(image)}
+                    onMouseEnter={() => setHoveredImageId(imageId)}
+                    onMouseLeave={() => setHoveredImageId(null)}
+                    className="relative group overflow-hidden cursor-pointer rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500"
+                    style={{
+                      transform: hoveredImageId === imageId ? 'scale(1.02)' : 'scale(1)',
+                      transition: 'transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1)'
+                    }}
+                  >
+                    {/* Image Container with aspect ratio based on natural image dimensions */}
+                    <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        className="object-cover transition-all duration-700 group-hover:scale-110"
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      />
+                      
+                      {/* Gradient Overlay */}
+                      <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500
+                        ${hoveredImageId === imageId ? 'opacity-100' : 'opacity-0'}`}
+                      />
+                      
+                      {/* Content Overlay */}
+                      <div className={`absolute bottom-0 left-0 right-0 p-4 md:p-6 transform transition-all duration-500
+                        ${hoveredImageId === imageId ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                        <div className="bg-white/10 backdrop-blur-md rounded-lg p-3">
+                          <p className="font-jost text-white text-sm md:text-base font-medium line-clamp-2">
+                            {image.category}
+                          </p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <span className="text-xs text-[#FF8400] font-jost tracking-wide uppercase">
+                              View Gallery
+                            </span>
+                            <div className="w-4 h-px bg-white/50"></div>
+                            <span className="text-xs text-white/70">Click to explore →</span>
+                          </div>
+                        </div>
                       </div>
-                    )}
-                  </div>
-                </div>
 
-                {/* Category Badge - Top corner */}
-                {image.category && (
-                  <div className="absolute top-3 left-3 z-10">
-                    <div className="bg-black/50 backdrop-blur-sm rounded-full px-3 py-1">
-                      <span className="text-white text-[10px] md:text-xs font-jost tracking-wider">
-                        {image.category}
-                      </span>
+                      {/* Category Badge */}
+                      {image.category && (
+                        <div className="absolute top-3 left-3 z-10">
+                          <div className="bg-black/50 backdrop-blur-sm rounded-full px-3 py-1">
+                            <span className="text-white text-[10px] md:text-xs font-jost tracking-wider line-clamp-1 max-w-[200px]">
+                              {image.category}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* "More Images" indicator */}
+                      {hasMoreImages && (
+                        <div className="absolute bottom-3 right-3 z-10">
+                          <div className="bg-black/60 backdrop-blur-sm rounded-full px-2 py-1">
+                            <span className="text-white text-[10px] font-jost">
+                              +{totalInCategory - MAX_COLLAGE_IMAGES_PER_EVENT} more
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                )}
-              </div>
+                );
+              })}
             </div>
           ))}
         </div>
-
-        {/* Empty State with creative illustration */}
-        {filteredImages.length === 0 && (
-          <div className="text-center py-20">
-            <div className="inline-block p-6 bg-gray-100 rounded-full mb-4">
-              <Sparkles size={32} className="text-gray-400" />
-            </div>
-            <p className="font-jost text-gray-500 text-lg">No moments found in this category.</p>
-            <button 
-              onClick={() => setFilter("All")}
-              className="mt-4 font-jost text-[#FF8400] underline"
-            >
-              View all moments
-            </button>
-          </div>
-        )}
       </div>
 
-      {/* Creative Lightbox Modal with Parallax Effect */}
+      {/* Lightbox Modal */}
       {selectedImage && (
         <div
           className="fixed inset-0 z-50 bg-black/98 flex items-center justify-center"
           onClick={closeLightbox}
           tabIndex={0}
         >
-          {/* Close button with animation */}
           <button
             onClick={closeLightbox}
             className="absolute top-4 right-4 z-20 text-white hover:text-[#FF8400] transition-all duration-300 hover:rotate-90"
@@ -274,8 +326,7 @@ export default function Gallery({
             <X size={32} />
           </button>
 
-          {/* Navigation buttons with creative styling */}
-          {filteredImages.length > 1 && (
+          {getCurrentCategoryImages().length > 1 && (
             <>
               <button
                 onClick={(e) => {
@@ -300,7 +351,6 @@ export default function Gallery({
             </>
           )}
 
-          {/* Image container with creative border */}
           <div
             className="relative w-full max-w-[85vw] max-h-[85vh]"
             onClick={(e) => e.stopPropagation()}
@@ -316,18 +366,17 @@ export default function Gallery({
               />
             </div>
             
-            {/* Creative Caption with gradient */}
             <div className="absolute -bottom-16 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-2xl">
               <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="text-center md:text-left">
-                  <p className="font-brisa italic text-xl md:text-2xl text-white">{selectedImage.alt}</p>
-                  {selectedImage.category && (
-                    <p className="font-jost text-sm text-[#FF8400] mt-1">{selectedImage.category}</p>
-                  )}
+                  <p className="font-brisa italic text-xl md:text-2xl text-white">{selectedImage.category}</p>
+                  <p className="font-jost text-sm text-white/70 mt-1">
+                    Photo {getCurrentDisplayIndex().current} of {getCurrentDisplayIndex().total}
+                  </p>
                 </div>
                 <div className="flex items-center gap-2 text-white/60 text-sm font-jost">
                   <div className="w-8 h-px bg-white/30"></div>
-                  <span>{currentIndex + 1} / {filteredImages.length}</span>
+                  <span>{getCurrentDisplayIndex().current} / {getCurrentDisplayIndex().total}</span>
                   <div className="w-8 h-px bg-white/30"></div>
                 </div>
               </div>

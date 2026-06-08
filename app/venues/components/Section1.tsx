@@ -18,16 +18,6 @@ export default function Section1() {
       "/venues/locations/maginhawa/8.webp",
     ],
     [
-      "/venues/locations/alabang/1.webp",
-      "/venues/locations/alabang/2.webp",
-      "/venues/locations/alabang/3.webp",
-      "/venues/locations/alabang/4.webp",
-      "/venues/locations/alabang/5.webp",
-      "/venues/locations/alabang/6.webp",
-      "/venues/locations/alabang/7.webp",
-      "/venues/locations/alabang/8.webp",
-    ],
-    [
       "/venues/locations/brittany/1.webp",
       "/venues/locations/brittany/2.webp",
       "/venues/locations/brittany/3.webp",
@@ -41,11 +31,6 @@ export default function Section1() {
       "/venues/locations/up/1.webp",
       "/venues/locations/up/2.webp",
       "/venues/locations/up/3.webp",
-    ],
-    [
-      "/venues/locations/savea/1.webp",
-      "/venues/locations/savea/2.webp",
-      "/venues/locations/savea/3.webp",
     ]
   ];
 
@@ -53,10 +38,10 @@ export default function Section1() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   
   // State for carousel indexes
-  const [indexes, setIndexes] = useState<number[]>(new Array(6).fill(0));
+  const [indexes, setIndexes] = useState<number[]>(new Array(4).fill(0));
   
   // Refs for interval cleanup
-  const intervalRefs = useRef<(NodeJS.Timeout | null)[]>(new Array(6).fill(null));
+  const intervalRefs = useRef<(NodeJS.Timeout | null)[]>(new Array(4).fill(null));
 
   // Handle hover start
   const handleMouseEnter = (i: number) => {
@@ -119,12 +104,6 @@ export default function Section1() {
       link: "venues/maginhawa",
     },
     {
-      name: "CRAVINGS ALABANG",
-      location: "Alabang",
-      image: "/venues/locations/locations1-2.png",
-      link: "venues/alabang",
-    },
-    {
       name: "BRITTANY HOTEL",
       location: "BGC",
       image: "/venues/locations/locations1-3.png",
@@ -137,16 +116,10 @@ export default function Section1() {
       link: "venues/casa-katipunan",
     },
     {
-      name: "UNIVERSITY OF THE PHILIPPINES",
+      name: "CORPORATE GATHERINGS - UP",
       location: "Bonifacio Global City",
       image: "/venues/locations/locations1-5.png",
       link: "venues/up",
-    },
-    {
-      name: "CRAVINGS AT SAVEA",
-      location: "Bay City Manila",
-      image: "/venues/locations/locations1-6.png",
-      link: "venues/savea",
     },
   ];
 

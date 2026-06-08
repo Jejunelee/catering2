@@ -21,31 +21,38 @@ interface TestimonialProps {
 const defaultTestimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Sarah Johnson",
-    role: "Corporate Event Planner",
-    content: "The party trays were absolutely amazing! Our entire team raved about the food. The presentation was stunning and everything tasted fresh and delicious.",
+    name: "Shirley Ann*",
+    role: "Customer",
+    content: "Ordering was seamless from start to finish. MJ provided exceptional customer service, making everything stress-free. The pasta and cakes were delicious—perfect for gifting or sharing with family. Will definitely order again!",
     rating: 5,
   },
   {
     id: 2,
-    name: "Michael Chen",
-    role: "Wedding Client",
-    content: "Best catering decision we made. The packed meals for our guests were convenient and incredibly tasty. Highly recommend!",
+    name: "Mean Jub**",
+    role: "Customer",
+    content: "The Chocolate Caramel Cake is rich, flavorful, and perfectly balanced. The lasagna is authentic, comforting, and easily one of the best we've had. Highly recommended!",
     rating: 5,
   },
   {
     id: 3,
-    name: "Emily Rodriguez",
-    role: "Birthday Party Host",
-    content: "Professional, punctual, and the food was outstanding. Will definitely be using them for all future events.",
+    name: "Audrey S**",
+    role: "Customer",
+    content: "Cravings Signatures never disappoints. The food and cakes are consistently delicious, and the warm, welcoming service makes every experience enjoyable. Highly recommended!",
+    rating: 5,
+  },
+  {
+    id: 4,
+    name: "Marion Dom***",
+    role: "Customer",
+    content: "Friendly and knowledgeable staff, plus amazing food. The lasagna and Chocolate Caramel Cake were both outstanding and loved by everyone I shared them with. Perfect for any occasion!",
     rating: 5,
   },
 ];
 
 export default function Testimonial({ 
   testimonials = defaultTestimonials, 
-  title = "Client Love", 
-  subtitle = "What our customers are saying" 
+  title = "Our Testimonials", 
+  subtitle = "" 
 }: TestimonialProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);

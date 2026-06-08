@@ -31,7 +31,7 @@ export default function Section2() {
     },
     {
       title: "BESPOKE SELECTION",
-      image: "/events/sections/Section2x3.png",
+      image: "/events/sections/Section2x3.jpeg",
       action: () => setOpenPremium(true),
       description: "CCA crafted menus for cravings",
       icon: <Sparkles size={20} />,

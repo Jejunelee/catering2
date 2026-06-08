@@ -59,9 +59,9 @@ export default function Premium({ open, onClose }: PremiumProps) {
         </button>
 
         {/* Header Image */}
-        <div className="relative w-full h-[200px] md:h-[280px] flex-shrink-0">
+        <div className="relative w-full h-[200px] md:h-[290px] flex-shrink-0">
           <Image
-            src="/events/premium/premium1x1.png"
+            src="/events/premium/premium1x1.jpg"
             alt="Premium Catering"
             fill
             className="object-cover"
